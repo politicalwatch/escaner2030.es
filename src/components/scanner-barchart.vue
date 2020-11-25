@@ -20,13 +20,13 @@ export default {
         orientation: 'horizontal',
         color: { key: 'color' },
         margin: { left: 60 },
-        tooltip: { suffix: 'aparició', suffixPlural: 'aparicions' },
-        keys: { "Texto escaneado": "Text escanejat", "Texto de refernecia": "text de referència"}
+        tooltip: { suffix: 'aparición', suffixPlural: 'apariciones' },
+        keys: { "Texto escaneado": "Texto escaneado", "Texto de referencia": "Texto de referencia"}
       },
       height: 500,
       barHeight: 40,
       maxHeight: 900,
-      downloadLabel: 'Descarregar',
+      downloadLabel: 'Descargar',
     };
   },
   props: {

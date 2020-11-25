@@ -4,9 +4,9 @@
       <thead>
         <tr>
           <th>ODS</th>
-          <th>Fita</th>
+          <th>Meta</th>
           <th>Etiqueta</th>
-          <th>Aparicions</th>
+          <th>Apariciones</th>
         </tr>
       </thead>
       <tbody>
@@ -21,7 +21,7 @@
     <tipi-message
       v-if="totalRows > limitRows"
       type="info"
-      icon>Estem mostrant {{limitRows}} d'un total de {{totalRows}} resultats trobats.</tipi-message>
+      icon>Estamos mostrando {{limitRows}} de un total de {{totalRows}} resultados encontrados.</tipi-message>
   </div>
 </template>
 

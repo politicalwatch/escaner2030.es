@@ -1,5 +1,5 @@
 <template>
-  <D3WordsCloud :config="config" :datum="datum" :height="400" title="Termes amb més aparicions" :download="downloadLabel"></D3WordsCloud>
+  <D3WordsCloud :config="config" :datum="datum" :height="400" title="Términos con más apariciones" :download="downloadLabel"></D3WordsCloud>
 </template>
 
 
@@ -25,12 +25,12 @@ export default {
         angle: [0],
         color: {key: 'color'},
         fontFamily: "Rubik",
-        tooltip: { suffix: 'aparició', suffixPlural: 'aparicions' },
+        tooltip: { suffix: 'aparición', suffixPlural: 'apariciones' },
       },
       minFontSize: 10,
       maxFontSize: 40,
       fontScaleExponent: 0.5,
-      downloadLabel: 'Descarregar',
+      downloadLabel: 'Descargar',
     };
   },
   props: {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <h5>Distribució dels resultats:</h5>
+      <h5>Distribución de los resultados:</h5>
 
       <div class="o-grid">
         <div class="o-grid__col u-6 u-padding-bottom-4">
@@ -12,35 +12,35 @@
         </div>
         <div class="o-grid__col u-12 u-6@sm">
           <ScannerSunburst :result="result" :styles="styles"></ScannerSunburst>
-          <tipi-message type="info" icon>Pots fer zoom fent clic a cadascuna de les porcions.</tipi-message>
+          <tipi-message type="info" icon>Puedes hacer zoom haciendo clic en cada una de las porciones.</tipi-message>
         </div>
         <div class="o-grid__col u-12 u-6@sm u-text-center">
           <ScannerWordsCloud :result="result" :maxResults="tagsInWordCloud" :styles="styles"></ScannerWordsCloud>
-          <tipi-message type="info" icon>Es mostra un màxim de {{tagsInWordCloud}} termes</tipi-message>
+          <tipi-message type="info" icon>Se muestran un máximo de {{tagsInWordCloud}} términos.</tipi-message>
         </div>
       </div>
     </div>
     <div class="u-padding-top-10">
-      <h5>Compara els resultats:</h5>
-      <tipi-message type="info" icon>Selecciona un text de referència, entre els que tenim carregats en el nostre sistema, per a poder comparar amb els resultats del teu text etiquetat.</tipi-message>
+      <h5>Compara los resultados:</h5>
+      <tipi-message type="info" icon>Selecciona un texto de referencia, entre los que tenemos cargados en nuestro sistema, para poder comparar con los resultados de tu texto etiquetato.</tipi-message>
       <div class="c-select-label u-block">
-        <label for="topic">Comparar amb...</label>
+        <label for="topic">Comparar con...</label>
         <multiselect
           v-model="textToCompare"
           :loading="isLoadingDocuments"
           :options="compareOptions"
           @search-change="searchDocuments"
-          name="pre-scanned-text" id="pre-scanned-text" placeholder="Selecciona un">
-            <template v-slot:noOptions>Llistat buit</template>
+          name="pre-scanned-text" id="pre-scanned-text" placeholder="Selecciona uno">
+            <template v-slot:noOptions>Listado vacío</template>
         </multiselect>
       </div>
       <ScannerBarchart :result="this.result" :resultToCompare="resultToCompare" :styles="styles"></ScannerBarchart>
     </div>
 
     <div class="u-padding-top-10">
-      <h5>Resultats detallats:</h5>
-      <p v-if="result.topics.length>9">Es mostren només 10 resultats de {{result.topics.length}}, per veure la resta descarregueu l'arxiu.</p>
-      <p v-if="result.topics.length<9">També podeu obtenir les dades descarregant-vos l'arxiu.</p>
+      <h5>Resultados detallados:</h5>
+      <p v-if="result.topics.length>9">Se muestran solo 10 resultados de {{result.topics.length}}, para ver el resto descarga el archivo.</p>
+      <p v-if="result.topics.length<9">También puedes obtener los datos descargando el archivo.</p>
       <ScannerTable :result="result"></ScannerTable>
     </div>
 
@@ -49,10 +49,10 @@
         :data="csvItems"
         class="c-button c-button--icon-right c-button--primary"
       >
-        Descarrega els teus resultats
+        Descarga tus resultados
         <span class="c-icon c-icon--type-download"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" fill="none" viewBox="0 0 12 16"><path fill="#2D4252" d="M12 5.647H8.571V0H3.43v5.647H0l6 6.588 6-6.588zm-12 8.47V16h12v-1.882H0z"></path></svg></span>
       </export-excel>
-      <tipi-message type="info" icon>Els resultats es descarregaran en format Excel.</tipi-message>
+      <tipi-message type="info" icon>Los resultados se descargaran en formato Excel.</tipi-message>
     </div>
   </div>
 </template>

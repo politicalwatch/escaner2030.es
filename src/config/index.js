@@ -5,25 +5,25 @@ export default {
   MENU: [
     {
       route: 'scanner',
-      name: 'Escàner',
+      name: 'Escáner',
       condition: true,
     },
     {
       route: 'about',
-      name: 'Fita',
+      name: 'Acerca',
       condition: true,
     },
   ],
   DISCLAIMER: {
-    name: 'Aquesta aplicació està en fase BETA.',
+    name: 'Esta aplicación está en fase BETA.',
   },
   LOGO: '/img/logo.png',
 
-  DEFAULT_PAGE_TITLE: 'EscànerODS Andorra',
+  DEFAULT_PAGE_TITLE: 'Escáner2030',
   DEFAULT_METATAGS: [
     {
       name: 'description',
-      content: 'EscànerODS'
+      content: 'Escáner2030.es'
     },
     {
       name: 'keywords',
@@ -39,19 +39,19 @@ export default {
     },
     {
       name: 'twitter:url',
-      content: 'http://escanerods.ad'
+      content: 'http://escaner2030.es'
     },
     {
       name: 'twitter:title',
-      content: 'EscànerODS'
+      content: 'Escáner2030'
     },
     {
       name: 'twitter:description',
-      content: 'EscànerODS'
+      content: 'Escáner2030.es'
     },
     {
       name: 'twitter:creator',
-      content: '@ciecode'
+      content: '@_PoliticalWatch'
     },
     {
       name: 'twitter:image:src',
@@ -59,7 +59,7 @@ export default {
     },
     {
       property: 'og:title',
-      content: 'EscànerODS'
+      content: 'Escáner2030.es'
     },
     {
       property: 'og:type',
@@ -67,7 +67,7 @@ export default {
     },
     {
       property: 'og:url',
-      content: 'http://www.escanerods.ad'
+      content: 'https://www.escaner2030.es'
     },
     {
       property: 'og:image',
@@ -75,11 +75,11 @@ export default {
     },
     {
       property: 'og:description',
-      content: 'EscànerODS'
+      content: 'Escáner2030.es'
     },
     {
       property: 'og:site_name',
-      content: 'EscànerODS'
+      content: 'Escáner2030.es'
     },
   ],
   STYLES: {
@@ -99,12 +99,12 @@ export default {
         color: "#4c9f38",
         image: "ods-3.svg",
       },
-      "ODS 4 Educació de qualitat": {
+      "ODS 4 Educación de calidad": {
         shortname: "ODS 4",
         color: "#c52333",
         image: "ods-4.svg",
       },
-      "ODS 5 Igualtat de gènere": {
+      "ODS 5 Igualdad de género": {
         shortname: "ODS 5",
         color: "#ed4135",
         image: "ods-5.svg",
@@ -129,7 +129,7 @@ export default {
         color: "#f06a38",
         image: "ods-9.svg",
       },
-      "ODS 10 Reducció de les desigualtats": {
+      "ODS 10 Reducción de las desigualdades": {
         shortname: "ODS 10",
         color: "#dd1367",
         image: "ods-10.svg",
@@ -144,7 +144,7 @@ export default {
         color: "#cf8d2a",
         image: "ods-12.svg",
       },
-      "ODS 13 Acció climàtica": {
+      "ODS 13 Acción por el clima": {
         shortname: "ODS 13",
         color: "#48773e",
         image: "ods-13.svg",

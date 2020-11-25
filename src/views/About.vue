@@ -1,18 +1,18 @@
 <template>
   <div>
     <div id="about" class="o-container o-section u-margin-bottom-10">
-      <tipi-header title="Fita"/>
+      <tipi-header title="Acerca"/>
       <div class="o-grid">
         <div class="o-grid__col u-8@sm u-offset-2@sm">
-          <p>EscànerODS.ad és una innovadora eina que permet identificar, dins de textos o documents, aquelles expressions que es puguin relacionar amb part dels Objectius de Desenvolupament Sostenible (ODS). L'eina ha estat dissenyada per identificar dins dels textos, informació relacionada amb els ODS gràcies a un avançat sistema d'etiquetatge automàtic massiu. És aquesta una versió beta de l'eina, on només es tractaran els ODS 4, 5 i 10.</p>
-          <h4>Com funciona?</h4>
-          <p>EscànerODS.ad disposa d'una base de dades de terminologia associada als ODS que, mitjançant un procés automàtic d'etiquetatge massiu, classifica les expressions dels textos introduïts, d'acord amb la seva relació amb les fites dels ODS. Després, mitjançant una interfície intuïtiva, atractiva i accessible, ofereix tota la informació rellevant en format reutilitzable. Els usuaris poden carregar els seus textos o documents per realitzar un escaneig adaptat a les seves necessitats.</p>
-          <h4>Pot adaptar-se a altres països?</h4>
-          <p>Sí, l'eina ha estat dissenyada perquè la seva adaptació sigui possible. La tecnologia d'EscànerODS.ad utilitza programari lliure i codi obert, això permet la seva adaptació a altres països i nivells de l'administració pública, responent a les necessitats de cada context.</p>
-          <h4>Qui som?</h4>
-          <p>EscànerODS.ad és un projecte de CIECODE/Political Watch, un think and do tank espanyol, en col·laboració amb diferents institucions andorranes, com són Actua Innovació, Consell General d'Andorra, Institut d'Estudis Andorrans, Observatori de la Sostenibilitat d'Andorra i Govern d'Andorra. La tasca de les institucions andorranes ha estat la traducció i adaptació de la terminologia pròpia dels ODS, a la casuística de l'entorn andorrà. La missió de CIECODE/Political Watch és generar, allà on treballen, unes condicions favorables pel disseny, adopció i implementació de polítiques públiques que promoguin una societat més justa, equitativa i sostenible. CIECODE/Political Watch desenvolupa tecnologies innovadores que automàticament, rastregen l'activitat relacionada amb el desenvolupament sostenible i que ofereixen accés a aquesta informació de forma pública, directa i gratuïta.</p>
-          <h4>D'on venim?</h4>
-          <p>EscànerODS.ad és una adaptació de TiPi, una eina digital implementada a Espanya des del 2015, que monitora tota l'activitat parlamentària de 21 temàtiques relacionades amb la lluita contra la pobresa i la desigualtat. TiPi (que respon a les sigles de Transparència + Informació + Participació + Influència) és un altre projecte innovador de Political Watch que genera dades obertes i fomenta la transparència, l'accés a informació i la rendició de comptes polítics mitjançant el monitoratge parlamentari de les 21 temàtiques estratègicament seleccionades.</p>
+          <p>Escáner2030.es es una innovadora herramienta que permite identificar, dentro de textos o documentos, aquellas expressionss que es puedan relacionar con parte de los Objectivos de Desarrollo Sostenible (ODS). La herramienta ha sido diseñada para identificar dentro de los textos, información relacionada con los ODS gracias a un avanzado sistema de etiquetado automático masivo.</p>
+          <h4>¿Cómo funciona?</h4>
+          <p>Escáner2030.es dispone de una base de datos de terminología asociada a los ODS que, mediante un proceso automático de etiquetado masivo, clasifica las expresiones de los textos introducidos, de acuerdo con su relación con los temas de los ODS. Después,mediantemitjançant una interfaz intuitiva, atractiva y accesible, ofrece tota la información relevante en formato reutilitzable. Los usuarios pueden cargar sus textos o documentos para realizar un escaneo adaptado a sus necesidades.</p>
+          <h4>¿Puede adaptarse a otros países?</h4>
+          <p>Sí, la herramienta ha sido diseñada para que su adaptación sea posible. La tecnología utilizada en Parlamento 2030 está construida utilizando software libre y código abierto, lo cual permite que su adaptación a otros países o a otros niveles de la administración pública sea posible de manera rápida y respondiendo a las necesidades propias de cada contexto.</p>
+          <h4>¿Quiénes somos?</h4>
+          <p>Escáner2030.es es un proyecto de Political Watch, un think and do tank español. La misión de Political Watch es generar, allá donde trabajamos, unas condicions favorables para el diseño, adopción e implementación de políticas públicas que promuevan una sociedad más justa, equitativa y sostenible. Political Watch desarrolla tecnologías innovadoras que automàticamente, rastrean la actividad relacionada con el desarrollo sostenible y que ofrecen acceso a esta información de forma pública, directa y gratuita.</p>
+          <h4>¿De dónde venimos?</h4>
+          <p>Escáner2030.es es una adaptación de TiPi, una herramienta digital implementada en España desde 2015, que monitoriza toda la actividad parlamentaria de 21 temáticas relacionadas con la lucha contra la pobreza y la desigualdad. TiPi (que responde a las siglas de Transparencia + Información + Participación + Influencia) es otro innovador proyecto de Political Watch que genera datos abiertos y fomenta la transparencia, el acceso a información y la rendición de cuentas política a través de la monitorización parlamentaria de las 21 temáticas estratégicamente seleccionadas.</p>
         </div>
       </div>
     </div>
