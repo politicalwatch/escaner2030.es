@@ -1,5 +1,5 @@
 # scanner2030ad
-Scanner 2030 - Andorra
+Escáner 2030 - España
 
 ## Requirements
 
@@ -8,8 +8,8 @@ NodeJS > 10.0
 ## Setup
 
 ```
-git clone https://github.com/politicalwatch/scanner2030ad.git
-cd scanner2030ad
+git clone https://github.com/politicalwatch/escaner2030.es.git
+cd escaner2030.es
 npm install
 cp src/config/index.js.example src/config/index.js
 ```
