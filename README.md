@@ -1,4 +1,4 @@
-# scanner2030ad
+# Escáner2030
 Escáner 2030 - España
 
 ## Requirements
