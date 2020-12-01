@@ -19,7 +19,7 @@
         </div>
         <div class="o-grid">
           <div class="o-grid__col u-12@sm u-margin-top-4">
-            <p class="u-color-secondary-dark u-text-tbody2">Escáner2030.es &copy; {{ (new Date() ).getFullYear() }}</p>
+            <p class="u-color-secondary-dark u-text-tbody2">Escaner2030.es &copy; {{ (new Date() ).getFullYear() }}</p>
           </div>
         </div>
       </div>
@@ -28,7 +28,7 @@
 
     <div class="c-decorator" style="background-image: url('/img/multicolor.jpg')"></div>
 
-    <cookie-law theme="base" buttonText="Entès" buttonClass="c-button c-button--primary" message="Esta página utiliza cookies para asegurarte una mejor experiencia web."></cookie-law>
+    <cookie-law theme="base" buttonText="Entendido" buttonClass="c-button c-button--primary" message="Esta página utiliza cookies para asegurarte una mejor experiencia web."></cookie-law>
 
   </div>
 </template>
