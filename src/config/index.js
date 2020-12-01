@@ -15,7 +15,7 @@ export default {
     },
   ],
   DISCLAIMER: {
-    name: 'Esta aplicación está en fase BETA.',
+    name: '',
   },
   LOGO: '/img/logo.png',
 
