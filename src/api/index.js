@@ -75,7 +75,7 @@ export default {
         expiration,
         excerpt,
         result: JSON.stringify(result),
-        verified: true
+        verified: false
       }
     )
 
