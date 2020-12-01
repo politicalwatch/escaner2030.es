@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import sha1 from 'js-sha1';
 import Scanner from '@/views/Scanner.vue'
 import Scanned from '@/views/Scanned.vue'
 import About from '@/views/About.vue'
