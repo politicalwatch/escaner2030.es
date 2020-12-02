@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="scanner" class="o-container o-section u-margin-bottom-10">
-      <tipi-header title="Escáner"/>
+      <tipi-header title="Escanea un texto"/>
 
         <div class="o-grid u-margin-bottom-4">
           <div class="o-grid__col u-12 u-6@sm">
