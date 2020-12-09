@@ -15,18 +15,17 @@
 
             <scanner-visualizations :result="result"></scanner-visualizations>
 
-          </div>
-
-          <!-- Begin CTAs -->
-          <div class="o-grid o-grid--wide o-grid--center u-bg-primary-light u-padding-top-8 u-padding-bottom-8 u-margin-top-8">
-            <div class="o-grid__col u-12 u-12@xs u-10@sm u-text-center">
-              <h5>Escanea oro documento</h5>
-              <p></p>
-              <router-link :to="{name:'scanner'}" class="c-button c-button--primary">Escanear otro documento</router-link>
+            <!-- Begin CTAs -->
+            <div class="o-grid o-grid--wide o-grid--center u-bg-primary-light u-padding-top-8 u-padding-bottom-8 u-margin-top-8">
+              <div class="o-grid__col u-12 u-12@xs u-10@sm u-text-center">
+                <h5>Escanea otro documento</h5>
+                <p></p>
+                <router-link :to="{name:'scanner'}" class="c-button c-button--primary">Escanear otro documento</router-link>
+              </div>
             </div>
-          </div>
-          <!-- End CTAs -->
+            <!-- End CTAs -->
 
+          </div>
         </div>
     </div>
   </div>
