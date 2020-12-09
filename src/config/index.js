@@ -19,19 +19,19 @@ export default {
   },
   LOGO: '/img/logo.png',
 
-  DEFAULT_PAGE_TITLE: 'Escáner2030',
+  DEFAULT_PAGE_TITLE: 'Escáner2030 - Escanea cualquier texto en clave ODS',
   DEFAULT_METATAGS: [
     {
       name: 'description',
-      content: 'Escáner2030.es'
+      content: 'Escáner2030 analiza y etiqueta en segundos cualquier texto que le proporciones en clave de Agenda 2030, ofreciendo visualizaciones sobre la presencia de los diferentes Objetivos de Desarrollo Sostenible (ODS).'
     },
     {
       name: 'keywords',
-      content: ''
+      content: 'Agenda 2030, ODS, Objetivos de Desarrollo Sostenible, Escáner2030, Naciones Unidas'
     },
     {
       itemprop: 'image',
-      content: 'https://ciecode.es/assets/images/projects/parlamento2030/parlamento2030.png'
+      content: 'http://escaner2030.es/img/logo.png'
     },
     {
       name: 'twitter:card',
@@ -43,11 +43,11 @@ export default {
     },
     {
       name: 'twitter:title',
-      content: 'Escáner2030'
+      content: 'Escáner2030 - Escanea cualquier texto en clave ODS'
     },
     {
       name: 'twitter:description',
-      content: 'Escáner2030.es'
+      content: 'Escáner2030 analiza y etiqueta en segundos cualquier texto que le proporciones en clave de Agenda 2030, ofreciendo visualizaciones sobre la presencia de los diferentes Objetivos de Desarrollo Sostenible (ODS).'
     },
     {
       name: 'twitter:creator',
@@ -55,11 +55,11 @@ export default {
     },
     {
       name: 'twitter:image:src',
-      content: 'https://ciecode.es/assets/images/projects/parlamento2030/parlamento2030.png'
+      content: 'http://escaner2030.es/img/logo.png'
     },
     {
       property: 'og:title',
-      content: 'Escáner2030.es'
+      content: 'Escáner2030 - Escanea cualquier texto en clave ODS'
     },
     {
       property: 'og:type',
@@ -71,15 +71,15 @@ export default {
     },
     {
       property: 'og:image',
-      content: 'https://ciecode.es/assets/images/projects/parlamento2030/parlamento2030.png'
+      content: 'http://escaner2030.es/img/logo.png'
     },
     {
       property: 'og:description',
-      content: 'Escáner2030.es'
+      content: 'Escáner2030 analiza y etiqueta en segundos cualquier texto que le proporciones en clave de Agenda 2030, ofreciendo visualizaciones sobre la presencia de los diferentes Objetivos de Desarrollo Sostenible (ODS).'
     },
     {
       property: 'og:site_name',
-      content: 'Escáner2030.es'
+      content: 'Escáner2030'
     },
   ],
   STYLES: {
