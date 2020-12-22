@@ -52,7 +52,7 @@
         Descarga tus resultados
         <span class="c-icon c-icon--type-download"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" fill="none" viewBox="0 0 12 16"><path fill="#2D4252" d="M12 5.647H8.571V0H3.43v5.647H0l6 6.588 6-6.588zm-12 8.47V16h12v-1.882H0z"></path></svg></span>
       </export-excel>
-      <tipi-message type="info" icon>Los resultados se descargaran en formato Excel.</tipi-message>
+      <tipi-message type="info" icon>Los resultados se descargarán en formato Excel.</tipi-message>
     </div>
   </div>
 </template>
