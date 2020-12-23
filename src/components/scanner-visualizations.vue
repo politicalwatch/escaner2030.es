@@ -132,3 +132,21 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.c-select-label {
+  .multiselect {
+    .multiselect__option--highlight {
+      background-color: white;
+      &:hover {
+        background-color: #2d4252;
+        color: white;
+      }
+
+      &.multiselect__option--selected {
+        color: white;
+      }
+    }
+  }
+}
+</style>
