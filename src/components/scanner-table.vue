@@ -18,10 +18,6 @@
         </tr>
       </tbody>
     </table>
-    <tipi-message
-      v-if="totalRows > limitRows"
-      type="info"
-      icon>Estamos mostrando {{limitRows}} de un total de {{totalRows}} resultados encontrados.</tipi-message>
   </div>
 </template>
 
