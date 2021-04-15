@@ -6,7 +6,6 @@
         <div class="o-grid u-margin-bottom-4">
           <div class="o-grid__col u-12 u-6@sm">
             <tipi-message type="info" icon><div v-html="'<p><strong>¿Cómo funciona?</strong> Copia y pega el contenido del texto a analizar en la caja que se muestra a continuación o selecciona un archivo de tu ordenador. Una vez que lo tengas simplemente dale al botón de Escanear y disfruta de las visualizaciones automáticas que genera la herramienta.</p><p><strong>Escáner2030</strong> es una herramienta de uso gratuito y libre que te permite detectar y obtener visualizaciones de la presencia de los diferentes Objetivos de Desarrollo Sostenible (ODS) en cualquier texto.</p>'"></div></tipi-message>
-            <tipi-message type="info" icon><div v-html="''"></div></tipi-message>
           </div>
 
           <div class="o-grid__col u-12 u-6@sm">
