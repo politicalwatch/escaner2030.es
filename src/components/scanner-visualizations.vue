@@ -7,7 +7,7 @@
         <div class="o-grid__col u-12 u-6@sm">
           <ScannerLegend :result="result" :isFirst="true" :styles="styles"></ScannerLegend>
         </div>
-        <div class="o-grid__col u-12 u-6@sm u-padding-bottom-4">
+        <div class="o-grid__col u-12 u-6@sm">
           <ScannerLegend :result="result" :isFirst="false" :styles="styles"></ScannerLegend>
         </div>
         <div class="o-grid__col u-12 u-6@sm u-padding-top-4">
