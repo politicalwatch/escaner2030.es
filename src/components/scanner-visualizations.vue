@@ -4,17 +4,17 @@
       <h5>Distribución de los resultados:</h5>
 
       <div class="o-grid">
-        <div class="o-grid__col u-6 u-padding-bottom-4">
+        <div class="o-grid__col u-12 u-6@sm">
           <ScannerLegend :result="result" :isFirst="true" :styles="styles"></ScannerLegend>
         </div>
-        <div class="o-grid__col u-6 u-padding-bottom-4">
+        <div class="o-grid__col u-12 u-6@sm u-padding-bottom-4">
           <ScannerLegend :result="result" :isFirst="false" :styles="styles"></ScannerLegend>
         </div>
-        <div class="o-grid__col u-12 u-6@sm">
+        <div class="o-grid__col u-12 u-6@sm u-padding-top-4">
           <ScannerSunburst :result="result" :styles="styles"></ScannerSunburst>
           <tipi-message type="info" icon>Puedes hacer zoom haciendo clic en cada una de las porciones.</tipi-message>
         </div>
-        <div class="o-grid__col u-12 u-6@sm u-text-center">
+        <div class="o-grid__col u-12 u-6@sm u-padding-top-4 u-text-center">
           <ScannerWordsCloud :result="result" :maxResults="tagsInWordCloud" :styles="styles"></ScannerWordsCloud>
           <tipi-message type="info" icon>Se muestran un máximo de {{tagsInWordCloud}} términos.</tipi-message>
         </div>
