@@ -1,6 +1,7 @@
 import config from '@/config';
 import axios from 'axios';
 
+const kb = config.KNOWLEDGEBASE;
 
 export default {
   getTopics() {
@@ -41,6 +42,7 @@ export default {
     let formData = new FormData()
     formData.append('text', text)
     formData.append('file', file)
+    formData.append('knowledgebase', kb)
 
     return axios.post(
       getEndpoint(),
