@@ -3,6 +3,7 @@ module.exports = {
     loaderOptions: {
       sass: {
         data: `@import "@/styles/_variables.scss";`,
+        implementation: require('sass'),
       },
     },
   },
