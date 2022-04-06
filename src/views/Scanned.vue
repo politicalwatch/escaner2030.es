@@ -62,7 +62,7 @@ export default {
         .then(response => {
           this.title = response.title
           this.excerpt = response.excerpt
-          this.result = response.result
+          this.result = response.result[0]
         })
         .catch(error => {
           this.errors = error
