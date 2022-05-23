@@ -2,6 +2,9 @@ import config from '@/config';
 import axios from 'axios';
 
 const kb = config.KNOWLEDGEBASE;
+const params = {
+  knowledgebase: kb
+}
 
 export default {
   getTopics() {
@@ -58,7 +61,8 @@ export default {
   },
   getScannerResult(taskID) {
     return axios.get(
-      getEndpoint(taskID)
+      getEndpoint(taskID),
+      {params}
     )
 
     function getEndpoint(taskID) {
