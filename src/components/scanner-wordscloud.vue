@@ -1,10 +1,15 @@
 <template>
-  <D3WordsCloud :config="config" :datum="datum" :height="400" title="Términos con más apariciones" :download="downloadLabel"></D3WordsCloud>
+  <D3WordsCloud
+    :config="config"
+    :datum="datum"
+    :height="400"
+    title="Términos con más apariciones"
+    :download="downloadLabel"
+  ></D3WordsCloud>
 </template>
 
-
 <script>
-import { D3WordsCloud } from 'tipi-uikit';
+import { D3WordsCloud } from '@politicalwatch/tipi-uikit';
 import { scalePow } from 'd3-scale';
 import { extent } from 'd3-array';
 
@@ -23,8 +28,8 @@ export default {
         size: 'size',
         value: 'value',
         angle: [0],
-        color: {key: 'color'},
-        fontFamily: "Rubik",
+        color: { key: 'color' },
+        fontFamily: 'Rubik',
         tooltip: { suffix: 'aparición', suffixPlural: 'apariciones' },
       },
       minFontSize: 10,
@@ -55,18 +60,19 @@ export default {
   methods: {
     parseResults() {
       /**
-      * Map tags array to custom array
-      */
+       * Map tags array to custom array
+       */
       if (!this.result.tags) return;
 
       const tags = this.result.tags
         .sort((a, b) => b.times - a.times)
         .slice(0, this.maxResults);
 
-      const textScale = d3.scalePow()
+      const textScale = d3
+        .scalePow()
         .exponent(this.fontScaleExponent)
         .range([this.minFontSize, this.maxFontSize])
-        .domain(d3.extent(tags, (d) => d.times));
+        .domain(d3.extent(tags, d => d.times));
 
       this.datum = tags.map(d => ({
         tag: d.tag,

@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { TipiMessage } from 'tipi-uikit';
+import { TipiMessage } from '@politicalwatch/tipi-uikit';
 
 export default {
   name: 'scanner-table',

@@ -1,12 +1,18 @@
 <template>
-  <D3Sunburst class="scanner-sunburst" :config="config" :datum="datum" :height="400" title="Distribución de resultados" :download="downloadLabel"></D3Sunburst>
+  <D3Sunburst
+    class="scanner-sunburst"
+    :config="config"
+    :datum="datum"
+    :height="400"
+    title="Distribución de resultados"
+    :download="downloadLabel"
+  ></D3Sunburst>
 </template>
-
 
 <script>
 import { color } from 'd3-color';
-import { D3Sunburst, Utils } from 'tipi-uikit';
-const d3 = {color};
+import { D3Sunburst, Utils } from '@politicalwatch/tipi-uikit';
+const d3 = { color };
 
 export default {
   name: 'ScannerSunburst',
@@ -15,11 +21,13 @@ export default {
   },
   data() {
     return {
-      datum: [{
-        name:'Resultados',
-        children: [],
-        color: '#EEE',
-      }],
+      datum: [
+        {
+          name: 'Resultados',
+          children: [],
+          color: '#EEE',
+        },
+      ],
       config: {
         key: 'name',
         value: 'value',
@@ -49,9 +57,9 @@ export default {
   methods: {
     parseResults() {
       /**
-      * Generate hierarchycal data from
-      * tags array
-      */
+       * Generate hierarchycal data from
+       * tags array
+       */
       if (!this.result.tags) return;
 
       // Parent element
@@ -59,9 +67,9 @@ export default {
         name: 'Resultados',
         children: [],
         color: '#EEE',
-      }
+      };
 
-      this.result.tags.forEach((d) => {
+      this.result.tags.forEach(d => {
         const topics = sunburstitems.children.map(d => d.name);
         const topicname = `${d.topic.split(' ')[0]} ${d.topic.split(' ')[1]}`;
         const subtopicname = d.subtopic;
@@ -72,51 +80,70 @@ export default {
           sunburstitems.children.push({
             name: topicname,
             color: this.styles.topics[d.topic].color,
-            children: [{
-              name: subtopicname,
-              color: d3.color(this.styles.topics[d.topic].color).brighter(0.5).formatHex(),
-              children: [{
-                name: tagname,
-                color: d3.color(this.styles.topics[d.topic].color).brighter(1).formatHex(),
-                value: d.times,
-              }]
-            }]
+            children: [
+              {
+                name: subtopicname,
+                color: d3
+                  .color(this.styles.topics[d.topic].color)
+                  .brighter(0.5)
+                  .formatHex(),
+                children: [
+                  {
+                    name: tagname,
+                    color: d3
+                      .color(this.styles.topics[d.topic].color)
+                      .brighter(1)
+                      .formatHex(),
+                    value: d.times,
+                  },
+                ],
+              },
+            ],
           });
         } else {
           // Topic exists -> check for subtopic
-          const subtopics = sunburstitems
-            .children[topics.indexOf(topicname)]
-            .children.map(d => d.name);
-          if(subtopics.indexOf(subtopicname) === -1) {
+          const subtopics = sunburstitems.children[
+            topics.indexOf(topicname)
+          ].children.map(d => d.name);
+          if (subtopics.indexOf(subtopicname) === -1) {
             // Subtopic is new -> append subtopic and tag
-            sunburstitems
-              .children[topics.indexOf(topicname)]
-              .children.push({
+            sunburstitems.children[topics.indexOf(topicname)].children.push({
               name: subtopicname,
-              color: d3.color(this.styles.topics[d.topic].color).brighter(0.5).formatHex(),
-              children: [{
-                name: tagname,
-                color: d3.color(this.styles.topics[d.topic].color).brighter(1).formatHex(),
-                value: d.times,
-              }]
-            })
+              color: d3
+                .color(this.styles.topics[d.topic].color)
+                .brighter(0.5)
+                .formatHex(),
+              children: [
+                {
+                  name: tagname,
+                  color: d3
+                    .color(this.styles.topics[d.topic].color)
+                    .brighter(1)
+                    .formatHex(),
+                  value: d.times,
+                },
+              ],
+            });
           } else {
             // Subtopic exists -> check for tag
-            const tags = sunburstitems
-              .children[topics.indexOf(topicname)]
-              .children[subtopics.indexOf(subtopicname)]
-              .children.map(d => d.name);
+            const tags = sunburstitems.children[
+              topics.indexOf(topicname)
+            ].children[subtopics.indexOf(subtopicname)].children.map(
+              d => d.name
+            );
 
-            if(tags.indexOf(tagname) === -1) {
+            if (tags.indexOf(tagname) === -1) {
               // Tag is new -> append tag
-              sunburstitems
-                .children[topics.indexOf(topicname)]
-                .children[subtopics.indexOf(subtopicname)]
-                .children.push({
+              sunburstitems.children[topics.indexOf(topicname)].children[
+                subtopics.indexOf(subtopicname)
+              ].children.push({
                 name: tagname,
-                color: d3.color(this.styles.topics[d.topic].color).brighter(1).formatHex(),
+                color: d3
+                  .color(this.styles.topics[d.topic].color)
+                  .brighter(1)
+                  .formatHex(),
                 value: d.times,
-              })
+              });
             }
           }
         }
@@ -124,7 +151,7 @@ export default {
       // Sort topics
       sunburstitems.children.sort((a, b) => Utils.naturalSort(a.name, b.name));
       this.datum = [sunburstitems];
-    }
+    },
   },
   watch: {
     result() {

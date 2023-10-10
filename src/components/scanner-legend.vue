@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { Utils } from 'tipi-uikit';
+import { Utils } from '@politicalwatch/tipi-uikit';
 
 export default {
   name: 'scanner-legend',

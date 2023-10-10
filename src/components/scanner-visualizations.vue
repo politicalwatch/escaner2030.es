@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { TipiMessage, TipiCsvDownload } from 'tipi-uikit';
+import { TipiMessage, TipiCsvDownload } from '@politicalwatch/tipi-uikit';
 import ScannerWordsCloud from '@/components/scanner-wordscloud.vue';
 import ScannerSunburst from '@/components/scanner-sunburst.vue';
 import ScannerBarchart from '@/components/scanner-barchart.vue';

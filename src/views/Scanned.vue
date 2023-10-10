@@ -32,7 +32,7 @@
 </template>
 
 <script>
-  import { TipiHeader } from 'tipi-uikit';
+  import { TipiHeader } from '@politicalwatch/tipi-uikit';
 import ScannerVisualizations from '@/components/scanner-visualizations.vue';
 import preScannedTexts from '@/scanned';
 import api from '@/api';

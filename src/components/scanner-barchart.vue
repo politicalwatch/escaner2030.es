@@ -1,10 +1,14 @@
 <template>
-  <D3BarChart :config="config" :datum="datum" :height="height" :download="downloadLabel"></D3BarChart>
+  <D3BarChart
+    :config="config"
+    :datum="datum"
+    :height="height"
+    :download="downloadLabel"
+  ></D3BarChart>
 </template>
 
-
 <script>
-import { D3BarChart, Utils } from 'tipi-uikit';
+import { D3BarChart, Utils } from '@politicalwatch/tipi-uikit';
 
 export default {
   name: 'ScannerBarchart',
@@ -21,7 +25,10 @@ export default {
         color: { key: 'color' },
         margin: { left: 60 },
         tooltip: { suffix: 'aparición', suffixPlural: 'apariciones' },
-        keys: { "Texto escaneado": "Texto escaneado", "Texto de referencia": "Texto de referencia"}
+        keys: {
+          'Texto escaneado': 'Texto escaneado',
+          'Texto de referencia': 'Texto de referencia',
+        },
       },
       height: 500,
       barHeight: 40,
@@ -48,25 +55,24 @@ export default {
     this.parseResults();
   },
   computed: {
-    isComparing(){
-      return this.resultToCompare
-        && this.resultToCompare.result.tags;
-    }
+    isComparing() {
+      return this.resultToCompare && this.resultToCompare.result.tags;
+    },
   },
   methods: {
     parseResults() {
       /**
-      * Map tags array to custom array
-      */
+       * Map tags array to custom array
+       */
       if (!this.result.tags) return;
 
       const topics = [];
 
       // Add comparation result to array
-      this.result.tags.forEach((d) => {
+      this.result.tags.forEach(d => {
         const names = d.topic.split(' ');
         const shortname = `${names[0]} ${names[1]}`;
-        const idx = topics.map(d => d.shortname).indexOf(shortname)
+        const idx = topics.map(d => d.shortname).indexOf(shortname);
         if (idx === -1) {
           topics.push({
             shortname,
@@ -80,11 +86,11 @@ export default {
       });
 
       // Add comparation result to array if exists
-      if(this.isComparing) {
-        this.resultToCompare.result.tags.forEach((d) => {
+      if (this.isComparing) {
+        this.resultToCompare.result.tags.forEach(d => {
           const names = d.topic.split(' ');
           const shortname = `${names[0]} ${names[1]}`;
-          const idx = topics.map(d => d.shortname).indexOf(shortname)
+          const idx = topics.map(d => d.shortname).indexOf(shortname);
           if (idx === -1) {
             topics.push({
               shortname,
@@ -99,23 +105,25 @@ export default {
       }
 
       // Set chart height
-      this.height = topics.length * this.barHeight > this.maxHeight
-       ? this.maxHeight
-       : topics.length * this.barHeight;
+      this.height =
+        topics.length * this.barHeight > this.maxHeight
+          ? this.maxHeight
+          : topics.length * this.barHeight;
 
       // Map values
-      this.datum = topics.map(d => ({
-        key: d.shortname,
-        'Texto escaneado': d.result,
-        'Texto de referencia': d.compared,
-        color: this.styles.topics[d.name].color,
-      })).sort((a, b) => Utils.naturalSort(a.key, b.key));
+      this.datum = topics
+        .map(d => ({
+          key: d.shortname,
+          'Texto escaneado': d.result,
+          'Texto de referencia': d.compared,
+          color: this.styles.topics[d.name].color,
+        }))
+        .sort((a, b) => Utils.naturalSort(a.key, b.key));
 
       // Change chart's configuration
       this.config.values = this.isComparing
         ? ['Texto escaneado', 'Texto de referencia']
         : ['Texto escaneado'];
-
     },
   },
   watch: {
@@ -124,7 +132,7 @@ export default {
     },
     resultToCompare() {
       this.parseResults();
-    }
+    },
   },
 };
 </script>
