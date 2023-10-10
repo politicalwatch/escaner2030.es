@@ -39,8 +39,10 @@ export default defineConfig({
       'pluralize',
       'qs',
       'd3',
+      'd3-array',
       'd3-cloud',
       'd3-dispatch',
+      'd3-scale',
     ],
   },
   resolve: {
