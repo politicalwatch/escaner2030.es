@@ -1,7 +1,7 @@
 version: "3.3"
 services:
   escaner-frontend:
-    build: .
+    image: politicalwatch/escaner2030:latest
     container_name: escaner-frontend
     restart: unless-stopped
     env_file:
