@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from '@/router';
-import store from '@/store';
+import { createPinia } from 'pinia';
 import '@politicalwatch/tipi-uikit/src/styles/main.scss';
 
 import * as Sentry from '@sentry/browser';
@@ -17,6 +17,6 @@ if (SENTRY_DSN) {
 
 const app = createApp(App);
 app.use(router);
-app.use(store);
+app.use(createPinia());
 
 app.mount('#app');

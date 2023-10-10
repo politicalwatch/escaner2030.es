@@ -18,7 +18,7 @@
 import { TipiNavbar } from '@politicalwatch/tipi-uikit';
 import FooterBlock from '@/components/footer-block.vue';
 import config from '@/config';
-import { mapActions } from 'vuex';
+import { useScannerStore } from '@/stores/scanner';
 
 export default {
   name: 'app',
@@ -26,18 +26,19 @@ export default {
     TipiNavbar,
     FooterBlock,
   },
-  data: function() {
+  setup() {
+    const store = useScannerStore();
+    return { store };
+  },
+  data: function () {
     return {
       MENU: config.MENU,
       DISCLAIMER: config.DISCLAIMER,
       LOGO: config.LOGO,
     };
   },
-  methods: {
-    ...mapActions(['getTopics']),
-  },
-  created: function() {
-    this.getTopics();
+  created: function () {
+    this.store.getTopics();
   },
 };
 </script>
