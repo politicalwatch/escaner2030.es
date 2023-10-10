@@ -113,10 +113,10 @@ import {
   TipiLoader,
 } from '@politicalwatch/tipi-uikit';
 import ScannerVisualizations from '@/components/scanner-visualizations.vue';
-import swal from 'sweetalert2';
+import Swal from 'sweetalert2';
 import api from '@/api';
 
-const VueScrollTo = require('vue-scrollto');
+import VueScrollTo from 'vue-scrollto';
 
 export default {
   name: 'scanner',
@@ -201,7 +201,7 @@ export default {
         });
     },
     saveResult: function() {
-      swal({
+      Swal.fire({
         focusConfirm: true,
         showCancelButton: true,
         confirmButtonText: 'Guardar',
@@ -219,11 +219,11 @@ export default {
           '<option value="1y">Un año</option>' +
           '</select>',
         preConfirm: () => {
-          const name = swal.getPopup().querySelector('#scan-name').value;
-          const expiry = swal.getPopup().querySelector('#scan-expiration')
+          const name = Swal.getPopup().querySelector('#scan-name').value;
+          const expiry = Swal.getPopup().querySelector('#scan-expiration')
             .value;
           if (!name || !expiry) {
-            swal.showValidationMessage('Por favor, rellena el formulario');
+            Swal.showValidationMessage('Por favor, rellena el formulario');
           }
           return { name, expiry };
         },
@@ -237,7 +237,7 @@ export default {
               this.result
             )
             .then(response => {
-              swal({
+              Swal.fire({
                 title: 'Guardado!',
                 text: 'Texto escaneado guardado satisfactoriamente',
                 html:
@@ -273,7 +273,7 @@ export default {
             })
             .catch(error => {
               const limited = error.response.status === 429;
-              swal({
+              Swal.fire({
                 title: limited
                   ? 'Límite por hora excedido '
                   : 'Error al guardar el texto escaneado',
