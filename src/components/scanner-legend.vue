@@ -1,15 +1,18 @@
 <template>
-    <div class="legend">
-      <div v-for="(d, i) in sortedTopics" :key="i" class="legend__item">
-        <div
-          class="legend__img"
-          :style="{
-            'background-color': styles.topics[d].color,
-            'background-image': `url(/img/topics/${styles.topics[d].image})`,
-          }"></div>
-        <span class="legend__text c-topic-link__name u-color-secondary">{{d}}</span>
-      </div>
+  <div class="legend">
+    <div v-for="(d, i) in sortedTopics" :key="i" class="legend__item">
+      <div
+        class="legend__img"
+        :style="{
+          'background-color': styles.topics[d].color,
+          'background-image': `url(/img/topics/${styles.topics[d].image})`,
+        }"
+      ></div>
+      <span class="legend__text c-topic-link__name u-color-secondary">{{
+        d
+      }}</span>
     </div>
+  </div>
 </template>
 
 <script>
@@ -34,12 +37,12 @@ export default {
   },
   computed: {
     sortedTopics() {
-      const topics = [ ...this.result.topics ];
+      const topics = [...this.result.topics];
       const sortedTopics = topics.sort(Utils.naturalSort);
       if (this.isFirst) {
-        return sortedTopics.slice(0, 8)
+        return sortedTopics.slice(0, 8);
       }
-      return sortedTopics.slice(8)
+      return sortedTopics.slice(8);
     },
   },
 };
@@ -54,7 +57,7 @@ $width: 36px;
     height: $width;
     display: inline-block;
     vertical-align: top;
-    background-size: $width/1.5 $width/1.5;
+    background-size: calc($width/1.5) calc($width/1.5);
     background-repeat: no-repeat;
     background-position: center;
   }
