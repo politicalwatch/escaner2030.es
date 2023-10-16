@@ -22,7 +22,7 @@ const routes = [
     component: About,
   },
   {
-    path: '/*',
+    path: '/:pathMatch(.*)*',
     name: 'Page404',
     component: Page404,
   },

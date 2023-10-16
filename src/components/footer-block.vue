@@ -7,7 +7,7 @@
       <div class="o-container">
         <div class="o-grid">
           <div class="o-grid__col u-3@sm u-margin-top-4">
-            <p class="u-text-overline">Desarrollado por</p>
+            <p class="u-text-overline">{{ $t('common.footer.developedBy') }}</p>
             <a href="http://politicalwatch.es" target="_blank"
               ><img
                 src="/img/logo-politicalwatch.png"
@@ -16,7 +16,7 @@
             /></a>
           </div>
           <div class="o-grid__col u-8@sm u-offset-1@sm u-margin-top-4">
-            <p class="u-text-overline">Con el apoyo de</p>
+            <p class="u-text-overline">{{ $t('common.footer.supportedBy') }}</p>
             <div class="o-grid">
               <div class="o-grid__col u-7@sm">
                 <a
@@ -65,9 +65,9 @@
       type="floating"
     >
       <template #message>
-        Este sitio usa cookies para asegurarte la mejor experiencia web.
+        {{ $t('common.cookies.info') }}
       </template>
-      <template #acceptContent>Entendido</template>
+      <template #acceptContent>{{ $t('common.cookies.accept') }}</template>
     </vue-cookie-accept-decline>
   </div>
 </template>

@@ -2,40 +2,37 @@
   <div>
     <div id="scanner" class="o-container o-section u-margin-bottom-10">
       <tipi-header
-        title="Escanea un texto"
-        subtitle="Etiqueta y visualiza el contenido de tu texto en relación con los objetivos de la Agenda 2030"
+        :title="$t('scanner.title')"
+        :subtitle="$t('scanner.subtitle')"
       />
 
       <div class="o-grid u-margin-bottom-4">
         <div class="o-grid__col u-12 u-6@sm">
-          <tipi-message type="info" icon
-            ><div
-              v-html="
-                '<p><strong>¿Cómo funciona?</strong> Copia y pega el contenido del texto a analizar en la caja que se muestra a continuación o selecciona un archivo de tu ordenador. Una vez que lo tengas simplemente dale al botón de Escanear y disfruta de las visualizaciones automáticas que genera la herramienta.</p><p><strong>Escáner2030</strong> es una herramienta de uso gratuito y libre que te permite detectar y obtener visualizaciones de la presencia de los diferentes Objetivos de Desarrollo Sostenible (ODS) en cualquier texto.</p>'
-              "
-            ></div
-          ></tipi-message>
+          <tipi-message type="info" icon>
+            <div v-html="$t('scanner.info')"></div>
+          </tipi-message>
         </div>
 
         <div class="o-grid__col u-12 u-6@sm">
           <p>
             <textarea
-              placeholder="Inserta aquí el texto que quieras escanear..."
+              :placeholder="$t('scanner.form.placeholder')"
               v-model="inputText"
               rows="9"
             />
           </p>
           <div class="c-input-label c-input-label--file u-block">
-            <label for="file">Sube un archivo</label>
+            <label for="file">{{ $t('scanner.form.file') }}</label>
             <input
               type="file"
               id="file"
               name="file"
-              v-on:change="loadSelectedFile"
+              @change="loadSelectedFile"
               placeholder="PDF, doc o txt"
             />
-            <small class="u-color-secondary"
-              >El peso máximo soportado de los archivos es de 20 MB.</small
+            <small class="u-color-secondary">{{
+              $t('scanner.form.weight')
+            }}</small
             ><br />
             <small class="u-color-secondary"
               >pdf, txt, doc, docx, odt, xls, xlsx, ppt, pptx, jpg, png, gif,
@@ -47,7 +44,7 @@
               id="start"
               class="c-button c-button--primary"
               @click.prevent="annotate"
-              >Escanear</a
+              >{{ $t('scanner.form.button') }}</a
             >
             <a
               class="c-button"
@@ -174,7 +171,7 @@ export default {
       document.getElementById('start').text = 'En proceso...';
       api
         .annotate(this.inputText, this.inputFile)
-        .then(response => {
+        .then((response) => {
           if (response.data.status === 'SUCCESS') {
             this.result = response.data.result;
             this.excerptText = response.data.excerpt;
@@ -188,7 +185,7 @@ export default {
             }, response.data.estimated_time * 1000);
           }
         })
-        .catch(error => {
+        .catch((error) => {
           if (error.response.status == 429)
             this.errors =
               'Has sobrepasado el límite de escaneos por hora. Vuelve a intentarlo de aquí a un rato.';
@@ -200,7 +197,7 @@ export default {
           document.getElementById('start').text = 'Escanear';
         });
     },
-    saveResult: function() {
+    saveResult: function () {
       Swal.fire({
         focusConfirm: true,
         showCancelButton: true,
@@ -220,8 +217,8 @@ export default {
           '</select>',
         preConfirm: () => {
           const name = Swal.getPopup().querySelector('#scan-name').value;
-          const expiry = Swal.getPopup().querySelector('#scan-expiration')
-            .value;
+          const expiry =
+            Swal.getPopup().querySelector('#scan-expiration').value;
           if (!name || !expiry) {
             Swal.showValidationMessage('Por favor, rellena el formulario');
           }
@@ -236,7 +233,7 @@ export default {
               this.excerptText,
               this.result
             )
-            .then(response => {
+            .then((response) => {
               Swal.fire({
                 title: 'Guardado!',
                 text: 'Texto escaneado guardado satisfactoriamente',
@@ -255,11 +252,11 @@ export default {
                 type: 'success',
                 onOpen: () => {
                   const clipboard = new ClipboardJS('.clipboard-button', {
-                    target: trigger => document.getElementById('url-to-copy'),
+                    target: (trigger) => document.getElementById('url-to-copy'),
                   });
                 },
               }).then(
-                function() {
+                function () {
                   this.scanned.title = response.data.title;
                   this.scanned.excerpt = response.data.excerpt;
                   this.$router.replace({
@@ -271,7 +268,7 @@ export default {
                 }.bind(this, response.data)
               );
             })
-            .catch(error => {
+            .catch((error) => {
               const limited = error.response.status === 429;
               Swal.fire({
                 title: limited
@@ -283,14 +280,14 @@ export default {
               });
             });
         })
-        .catch(error => {
+        .catch((error) => {
           this.errors = error;
         });
     },
-    getAsyncResults: function(taskID) {
+    getAsyncResults: function (taskID) {
       api
         .getScannerResult(taskID)
-        .then(response => {
+        .then((response) => {
           if (response.data.status === 'SUCCESS') {
             this.result = response.data.result;
             this.excerptText = response.data.excerpt;

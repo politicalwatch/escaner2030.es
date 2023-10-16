@@ -6,12 +6,13 @@ export default {
   MENU: [
     {
       route: 'scanner',
-      name: 'Escáner',
+      name:
+        import.meta.env.VITE_DEFAULT_LOCALE === 'es' ? 'Escáner' : 'Scanner',
       condition: true,
     },
     {
       route: 'about',
-      name: 'Acerca',
+      name: import.meta.env.VITE_DEFAULT_LOCALE === 'es' ? 'Acerca' : 'About',
       condition: true,
     },
   ],
