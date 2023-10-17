@@ -1,4 +1,4 @@
-version: "3.3"
+version: '3.3'
 services:
   escaner-frontend:
     image: politicalwatch/escaner2030:latest
