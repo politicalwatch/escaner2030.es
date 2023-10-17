@@ -57,8 +57,11 @@
 
     <vue-cookie-accept-decline
       :debug="false"
-      :disableDecline="true"
+      :disableDecline="false"
       :showPostponeButton="false"
+      @clicked-accept="cookieClickedAccept"
+      @clicked-decline="cookieClickedDecline"
+      @status="cookieStatus"
       elementId="cookiePanel"
       ref="cookiePanel"
       transitionName="slideFromBottom"
@@ -67,6 +70,8 @@
       <template #message>
         {{ $t('common.cookies.info') }}
       </template>
+
+      <template #declineContent>{{ $t('common.cookies.decline') }}</template>
       <template #acceptContent>{{ $t('common.cookies.accept') }}</template>
     </vue-cookie-accept-decline>
   </div>
@@ -74,6 +79,7 @@
 
 <script>
 import VueCookieAcceptDecline from 'vue-cookie-accept-decline';
+import 'vue-cookie-accept-decline/dist/vue-cookie-accept-decline.css';
 import { TipiIcon } from '@politicalwatch/tipi-uikit';
 
 export default {
@@ -82,30 +88,44 @@ export default {
     VueCookieAcceptDecline,
     TipiIcon,
   },
+  methods: {
+    cookieStatus: (val) => {
+      // console.log('Cookie status: ' + val);
+      if (val === 'decline' || val == null) {
+        if (gtag) {
+          gtag('consent', 'default', {
+            ad_storage: 'denied',
+            analytics_storage: 'denied',
+          });
+        }
+      } else if (val === 'accept') {
+        bootstrap().then(() => {
+          gtag('consent', 'update', {
+            ad_storage: 'granted',
+            analytics_storage: 'granted',
+          });
+        });
+      }
+    },
+    cookieClickedAccept: () => {
+      bootstrap().then(() => {
+        gtag('consent', 'update', {
+          ad_storage: 'granted',
+          analytics_storage: 'granted',
+        });
+      });
+    },
+    cookieClickedDecline: () => {
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        analytics_storage: 'denied',
+      });
+    },
+  },
 };
 </script>
 
 <style scoped lang="scss">
-.cookie {
-  position: fixed;
-  overflow: hidden;
-  box-sizing: border-box;
-  z-index: 9999;
-  background: #f1f1f1;
-  color: #232323;
-  padding: 1.25em;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-.cookie__floating__wrap {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  align-items: baseline;
-  flex-direction: row;
-}
-
 #footer {
   .o-container {
     border-top: 1px solid #ddd;

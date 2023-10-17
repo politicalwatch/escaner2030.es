@@ -14,7 +14,7 @@ const messages = {
         copy: 'Some rights reserved',
       },
       cookies: {
-        info: 'Este sitio usa cookies para asegurarte la mejor experiencia web.',
+        info: 'This site uses cookies to ensure you get the best experience.',
         accept: 'Accept',
         decline: 'Decline',
       },
