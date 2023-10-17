@@ -3,125 +3,87 @@ import axios from 'axios';
 
 const kb = config.KNOWLEDGEBASE;
 const params = {
-  knowledgebase: kb
-}
+  knowledgebase: kb,
+};
 
 export default {
   getTopics() {
-    return axios.get(getEndpoint()).then(response => response.data);
+    return axios.get(getEndpoint()).then((response) => response.data);
 
     function getEndpoint() {
-      return [
-        config.URL,
-        '/topics/'
-      ].join('');
+      return [config.URL, '/topics/'].join('');
     }
   },
   getTopic(topicId) {
-    return axios.get(getEndpoint(topicId)).then(response => response.data);
+    return axios.get(getEndpoint(topicId)).then((response) => response.data);
 
     function getEndpoint(topicId) {
-      return [
-        config.URL,
-        '/topics/',
-        topicId
-      ].join('');
+      return [config.URL, '/topics/', topicId].join('');
     }
   },
   getTags(topicId) {
     return axios
       .get(getEndpoint(topicId))
-      .then(response => response.data.tags);
+      .then((response) => response.data.tags);
 
     function getEndpoint(topicId) {
-      return [
-        config.URL,
-        '/topics/',
-        topicId
-      ].join('');
+      return [config.URL, '/topics/', topicId].join('');
     }
   },
   annotate(text, file) {
-    let formData = new FormData()
-    formData.append('text', text)
-    formData.append('file', file)
-    formData.append('knowledgebase', kb)
+    let formData = new FormData();
+    formData.append('text', text);
+    formData.append('file', file);
+    formData.append('knowledgebase', kb);
 
-    return axios.post(
-      getEndpoint(),
-      formData,
-    )
+    return axios.post(getEndpoint(), formData);
 
     function getEndpoint() {
-      return [
-        config.URL,
-        '/tagger/'
-      ].join('');
+      return [config.URL, '/tagger/'].join('');
     }
   },
   getScannerResult(taskID) {
-    return axios.get(
-      getEndpoint(taskID),
-      {params}
-    )
+    return axios.get(getEndpoint(taskID), { params });
 
     function getEndpoint(taskID) {
-      return [
-        config.URL,
-        '/tagger/result/',
-        taskID
-      ].join('');
+      return [config.URL, '/tagger/result/', taskID].join('');
     }
   },
   saveScanned(title, expiration, excerpt, result) {
-    return axios.post(
-      getEndpoint(),
-      {
-        title,
-        expiration,
-        excerpt,
-        result: JSON.stringify(result),
-        verified: false
-      }
-    )
+    return axios.post(getEndpoint(), {
+      title,
+      expiration,
+      excerpt,
+      result: JSON.stringify(result),
+      verified: false,
+    });
 
     function getEndpoint() {
-      return [
-        config.URL,
-        '/scanned/',
-      ].join('');
+      return [config.URL, '/scanned/'].join('');
     }
   },
   getScanned(scannedId) {
-    return axios.get(
-      getEndpoint(scannedId)
-    ).then(response => response.data)
-      .catch(error => {
-        console.log(error.response)
+    return axios
+      .get(getEndpoint(scannedId))
+      .then((response) => response.data)
+      .catch((error) => {
+        console.log(error.response);
       });
 
     function getEndpoint(scannedId) {
-      return [
-        config.URL,
-        '/scanned/',
-        scannedId
-      ].join('');
+      return [config.URL, '/scanned/', scannedId].join('');
     }
   },
   searchScanned(query) {
-    return axios.get(
-        getEndpoint(query)
-      ).then(response => response.data)
-      .catch(error => {
-        console.log(error.response)
+    return axios
+      .get(getEndpoint(query))
+      .then((response) => response.data)
+      .catch((error) => {
+        console.log(error.response);
       });
 
     function getEndpoint(query) {
-      return [
-        config.URL,
-        '/scanned/search/',
-        query
-      ].join('');
+      return [config.URL, '/scanned/search/', query].join('');
     }
-  }
+  },
 };

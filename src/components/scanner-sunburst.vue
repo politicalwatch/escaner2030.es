@@ -4,7 +4,7 @@
     :config="config"
     :datum="datum"
     :height="400"
-    title="Distribución de resultados"
+    :title="$t('components.scannerSunburst.title')"
     :download="downloadLabel"
   ></D3Sunburst>
 </template>
@@ -69,8 +69,8 @@ export default {
         color: '#EEE',
       };
 
-      this.result.tags.forEach(d => {
-        const topics = sunburstitems.children.map(d => d.name);
+      this.result.tags.forEach((d) => {
+        const topics = sunburstitems.children.map((d) => d.name);
         const topicname = `${d.topic.split(' ')[0]} ${d.topic.split(' ')[1]}`;
         const subtopicname = d.subtopic;
         const tagname = `${topicname} | ${d.tag}`;
@@ -104,7 +104,7 @@ export default {
           // Topic exists -> check for subtopic
           const subtopics = sunburstitems.children[
             topics.indexOf(topicname)
-          ].children.map(d => d.name);
+          ].children.map((d) => d.name);
           if (subtopics.indexOf(subtopicname) === -1) {
             // Subtopic is new -> append subtopic and tag
             sunburstitems.children[topics.indexOf(topicname)].children.push({
@@ -129,7 +129,7 @@ export default {
             const tags = sunburstitems.children[
               topics.indexOf(topicname)
             ].children[subtopics.indexOf(subtopicname)].children.map(
-              d => d.name
+              (d) => d.name
             );
 
             if (tags.indexOf(tagname) === -1) {

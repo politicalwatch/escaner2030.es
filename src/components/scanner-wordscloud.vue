@@ -3,7 +3,7 @@
     :config="config"
     :datum="datum"
     :height="400"
-    title="Términos con más apariciones"
+    :title="$t('components.scannerWordscloud.title')"
     :download="downloadLabel"
   ></D3WordsCloud>
 </template>
@@ -72,9 +72,9 @@ export default {
         .scalePow()
         .exponent(this.fontScaleExponent)
         .range([this.minFontSize, this.maxFontSize])
-        .domain(d3.extent(tags, d => d.times));
+        .domain(d3.extent(tags, (d) => d.times));
 
-      this.datum = tags.map(d => ({
+      this.datum = tags.map((d) => ({
         tag: d.tag,
         size: textScale(d.times),
         value: d.times,

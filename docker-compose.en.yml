@@ -1,0 +1,12 @@
+version: '3.3'
+services:
+  escaner-frontend:
+    image: politicalwatch/escaner2030:latest
+    container_name: escaner-frontend
+    restart: unless-stopped
+    env_file:
+      - .env.production.en
+    ports:
+      - 8070:80
+    volumes:
+      - ./nginx-default.conf:/etc/nginx/conf.d/default.conf

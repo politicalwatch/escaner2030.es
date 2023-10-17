@@ -3,9 +3,17 @@
     <transition name="fade" mode="out-in">
       <div>
         <tipi-navbar
+          v-if="$i18n.locale === 'es'"
           pre-image="/img/multicolor.jpg"
           :links="MENU"
           :logo="LOGO"
+        />
+        <tipi-navbar
+          v-else
+          pre-image="/img/multicolor.jpg"
+          :links="MENU"
+          :logo="LOGO"
+          :disclaimerLink="DISCLAIMER"
         />
         <router-view />
         <footer-block />
@@ -32,8 +40,8 @@ export default {
   },
   data: function () {
     return {
-      MENU: config.MENU,
-      DISCLAIMER: config.DISCLAIMER,
+      MENU: config.MENU[this.$i18n.locale],
+      DISCLAIMER: config.DISCLAIMER[this.$i18n.locale],
       LOGO: config.LOGO,
     };
   },

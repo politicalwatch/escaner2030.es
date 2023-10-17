@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <h5>Distribución de los resultados:</h5>
+      <h5>{{ $t('components.scannerVisualizations.title') }}:</h5>
 
       <div class="o-grid">
         <div class="o-grid__col u-12 u-6@sm">
@@ -20,10 +20,9 @@
         </div>
         <div class="o-grid__col u-12 u-6@sm u-padding-top-4">
           <ScannerSunburst :result="result" :styles="styles"></ScannerSunburst>
-          <tipi-message type="info" icon
-            >Puedes hacer zoom haciendo clic en cada una de las
-            porciones.</tipi-message
-          >
+          <tipi-message type="info" icon>{{
+            $t('components.scannerVisualizations.zoom')
+          }}</tipi-message>
         </div>
         <div class="o-grid__col u-12 u-6@sm u-padding-top-4 u-text-center">
           <ScannerWordsCloud
@@ -31,22 +30,25 @@
             :maxResults="tagsInWordCloud"
             :styles="styles"
           ></ScannerWordsCloud>
-          <tipi-message type="info" icon
-            >Se muestran un máximo de
-            {{ tagsInWordCloud }} términos.</tipi-message
+          <tipi-message type="info" icon>
+            {{
+              $t('components.scannerVisualizations.maxShown', {
+                num: tagsInWordCloud,
+              })
+            }}</tipi-message
           >
         </div>
       </div>
     </div>
-    <div class="u-padding-top-10">
-      <h5>Compara los resultados:</h5>
-      <tipi-message type="info" icon
-        >Selecciona un texto de referencia, entre los que tenemos cargados en
-        nuestro sistema, para poder comparar con los resultados de tu texto
-        etiquetato.</tipi-message
-      >
+    <div v-if="$i18n.locale === 'es'" class="u-padding-top-10">
+      <h5>{{ $t('components.scannerVisualizations.compare.title') }}</h5>
+      <tipi-message type="info" icon>{{
+        $t('components.scannerVisualizations.compare.info')
+      }}</tipi-message>
       <div class="c-select-label u-block">
-        <label for="topic">Comparar con...</label>
+        <label for="topic">{{
+          $t('components.scannerVisualizations.compare.label')
+        }}</label>
         <multiselect
           v-model="textToCompare"
           :loading="isLoadingDocuments"
@@ -54,9 +56,13 @@
           @search-change="searchDocuments"
           name="pre-scanned-text"
           id="pre-scanned-text"
-          placeholder="Selecciona uno"
+          :placeholder="
+            $t('components.scannerVisualizations.compare.placeholder')
+          "
         >
-          <template v-slot:noOptions>Listado vacío</template>
+          <template v-slot:noOptions>{{
+            $t('components.scannerVisualizations.compare.empty')
+          }}</template>
         </multiselect>
       </div>
       <ScannerBarchart
@@ -67,13 +73,16 @@
     </div>
 
     <div class="u-padding-top-10">
-      <h5>Resultados detallados:</h5>
+      <h5>{{ $t('components.scannerVisualizations.detailed.title') }}</h5>
       <p v-if="result.topics.length > 9">
-        Aquí solo te mostramos 10 resultados de {{ result.tags.length }}, para
-        ver el resto descarga el archivo.
+        {{
+          $t('components.scannerVisualizations.detailed.infoLength', {
+            num: result.tags.length,
+          })
+        }}
       </p>
-      <p v-if="result.topics.length < 9">
-        También puedes obtener los datos descargando el archivo.
+      <p v-else>
+        {{ $t('components.scannerVisualizations.detailed.info') }}
       </p>
       <ScannerTable :result="result"></ScannerTable>
     </div>
@@ -85,7 +94,7 @@
         type="xls"
         class="c-button c-button--icon-right c-button--primary"
       >
-        Descarga tus resultados
+        {{ $t('components.scannerVisualizations.detailed.button') }}
         <span class="c-icon c-icon--type-download"
           ><svg
             xmlns="http://www.w3.org/2000/svg"
@@ -101,7 +110,7 @@
         ></span>
       </json-excel>
       <tipi-message type="info" icon>
-        Los resultados se descargarán en formato Excel.
+        {{ $t('components.scannerVisualizations.detailed.downloadInfo') }}
       </tipi-message>
     </div>
   </div>
@@ -147,7 +156,7 @@ export default {
       csvItems: this.result.tags,
       scanned: {},
       tagsInWordCloud: 25,
-      styles: config.STYLES,
+      styles: config.STYLES[this.$i18n.locale],
       isLoadingDocuments: false,
       documents: [],
       compareOptions: [],

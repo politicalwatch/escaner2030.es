@@ -44,7 +44,11 @@
               id="start"
               class="c-button c-button--primary"
               @click.prevent="annotate"
-              >{{ $t('scanner.form.button') }}</a
+              >{{
+                this.inProgress
+                  ? $t('scanner.form.buttonProgress')
+                  : $t('scanner.form.button')
+              }}</a
             >
             <a
               class="c-button"
@@ -64,15 +68,14 @@
           }}</tipi-message>
           <tipi-loader
             v-if="inProgress"
-            title="Escaneando documento"
+            :title="$t('scanner.result.scanning')"
             :subtitle="subtitle"
           />
         </div>
         <div class="o-grid__col u-12 result" v-if="result">
-          <tipi-message v-if="!result.topics.length" type="error" icon
-            >No hemos encontrado ninguna coincidencia entre tu texto y nuestras
-            etiquetas.</tipi-message
-          >
+          <tipi-message v-if="!result.topics.length" type="error" icon>
+            {{ $t('scanner.result.notFound') }}
+          </tipi-message>
 
           <div v-else>
             <scanner-visualizations :result="result"></scanner-visualizations>
@@ -84,16 +87,13 @@
             v-if="result.topics.length"
           >
             <div class="o-grid__col u-12 u-12@xs u-10@sm u-text-center">
-              <h5>Guarda el resultado</h5>
+              <h5>{{ $t('scanner.save.title') }}</h5>
               <p>
-                Puedes volver a acceder a los resultados de tu texto escaneado
-                sin necesidad de descargarte el archivo. Al guardar el resutado,
-                se generará un enlace que pudes conservar y visitar siempre quey
-                visitar siempre que lo necesites.
+                {{ $t('scanner.save.body') }}
               </p>
-              <a @click="saveResult" class="c-button c-button--primary"
-                >Guardar</a
-              >
+              <a @click="saveResult" class="c-button c-button--primary">
+                {{ $t('scanner.save.button') }}
+              </a>
             </div>
           </div>
           <!-- End CTAs -->
@@ -111,9 +111,8 @@ import {
 } from '@politicalwatch/tipi-uikit';
 import ScannerVisualizations from '@/components/scanner-visualizations.vue';
 import Swal from 'sweetalert2';
-import api from '@/api';
-
 import VueScrollTo from 'vue-scrollto';
+import api from '@/api';
 
 export default {
   name: 'scanner',
@@ -168,7 +167,6 @@ export default {
     annotate() {
       this.cleanResult();
       this.inProgress = true;
-      document.getElementById('start').text = 'En proceso...';
       api
         .annotate(this.inputText, this.inputFile)
         .then((response) => {
@@ -176,7 +174,6 @@ export default {
             this.result = response.data.result;
             this.excerptText = response.data.excerpt;
             this.inProgress = false;
-            document.getElementById('start').text = 'Escanear';
             VueScrollTo.scrollTo('#result', 1500);
           } else if (response.data.status === 'PROCESSING') {
             this.estimatedTime = response.data.estimated_time;
@@ -194,7 +191,6 @@ export default {
               'Archivo demasiado pesado para procesarlo. Prueba con uno más ligero.';
           else this.errors = error.response.data.message;
           this.inProgress = false;
-          document.getElementById('start').text = 'Escanear';
         });
     },
     saveResult: function () {
@@ -292,7 +288,8 @@ export default {
             this.result = response.data.result;
             this.excerptText = response.data.excerpt;
             this.inProgress = false;
-            document.getElementById('start').text = 'Iniciar proceso';
+            document.getElementById('start').text =
+              this.$i18n.locale === 'es' ? 'Iniciar proceso' : 'Start process';
             VueScrollTo.scrollTo('#result', 1500);
           } else if (response.data.status === 'PENDING') {
             setTimeout(() => {

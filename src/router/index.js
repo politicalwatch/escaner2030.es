@@ -50,14 +50,14 @@ router.beforeEach((to, from, next) => {
     .find((r) => r.meta && r.meta.metaTags);
 
   if (nearestWithTitle) document.title = nearestWithTitle.meta.title;
-  else document.title = config.DEFAULT_PAGE_TITLE;
+  else document.title = config.DEFAULT_PAGE_TITLE[config.DEFAULT_LOCALE];
 
   Array.from(document.querySelectorAll('[data-vue-router-controlled]')).map(
     (el) => el.parentNode.removeChild(el)
   );
 
   let metaTags = !nearestWithMeta
-    ? config.DEFAULT_METATAGS
+    ? config.DEFAULT_METATAGS[config.DEFAULT_LOCALE]
     : nearestWithMeta.meta.metaTags;
 
   if (nearestWithMeta) {

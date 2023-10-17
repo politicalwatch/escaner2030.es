@@ -11,6 +11,7 @@ const messages = {
       footer: {
         developedBy: 'Developed by',
         supportedBy: 'Supported by',
+        copy: 'Some rights reserved',
       },
       cookies: {
         info: 'Este sitio usa cookies para asegurarte la mejor experiencia web.',
@@ -120,6 +121,51 @@ const messages = {
         file: 'Upload a file',
         weight: 'The max file size allowed is 20 MB.',
         button: 'Scan now',
+        buttonProgress: 'In progress...',
+      },
+      result: {
+        scanning: 'Scanning document...',
+        notFound:
+          "Scanner 2030 didn't found any matches between your text and the 2030 Agenda",
+      },
+      save: {
+        title: 'Save the results',
+        body: 'You can re-access the results of your scanned text without downloading the file. When saving the result, a link will be generated that you can keep and visit whenever you need it.',
+        button: 'Save',
+      },
+    },
+    components: {
+      scannerSunburst: {
+        title: 'Results distribution',
+      },
+      scannerTable: {
+        sdg: 'SDG',
+        goal: 'Goal',
+        tag: 'Tag',
+        findings: 'Findings',
+      },
+      scannerVisualizations: {
+        title: 'Distribution of the results',
+        zoom: 'You can zoom clicking in each of the portions.',
+        maxShown: 'We show a maximum of {num} terms.',
+        compare: {
+          title: 'Compare the results:',
+          info: 'Select a reference text, among those we have loaded in our system, to be able to compare with the results of your tagged text.',
+          label: 'Compare with...',
+          placeholder: 'Select one',
+          empty: 'Empty list',
+        },
+        detailed: {
+          title: 'Detailed results:',
+          infoLength:
+            'We show you only 10 of {num} results, download the file to see the rest.',
+          info: 'You can also get the data downloading the file.',
+          button: 'Download the results',
+          buttonInfo: 'The results will be downloaded in Excel format.',
+        },
+      },
+      scannerWordscloud: {
+        title: 'Terms most found',
       },
     },
   },
@@ -135,6 +181,7 @@ const messages = {
       footer: {
         developedBy: 'Desarrollado por',
         supportedBy: 'Con el apoyo de',
+        copy: 'Algunos derechos reservados',
       },
       cookies: {
         info: 'Este sitio usa cookies para asegurarte la mejor experiencia web.',
@@ -226,14 +273,13 @@ const messages = {
       body: 'Regresa a la página de inicio para encontrar lo que realmente estás buscando.',
       button: 'Volver al inicio',
     },
-    scanned: {},
     scanner: {
       title: 'Escanea un texto',
       subtitle:
         'Etiqueta y visualiza el contenido de tu texto en relación con los objetivos de la Agenda 2030',
       info: `<p>
-       <strong>¿Cómo funciona?</strong>
-       Copia y pega el contenido del texto a analizar en la caja que se muestra a continuación o selecciona un archivo de tu ordenador. Una vez que lo tengas simplemente dale al botón de Escanear y disfruta de las visualizaciones automáticas que genera la herramienta.
+      <strong>¿Cómo funciona?</strong>
+      Copia y pega el contenido del texto a analizar en la caja que se muestra a continuación o selecciona un archivo de tu ordenador. Una vez que lo tengas simplemente dale al botón de Escanear y disfruta de las visualizaciones automáticas que genera la herramienta.
       </p>
       <p>
       <strong>Escáner2030</strong>
@@ -244,6 +290,51 @@ const messages = {
         file: 'Sube un archivo',
         weight: 'El peso máximo soportado de los archivos es de 20 MB.',
         button: 'Escanear',
+        buttonProgress: 'En proceso...',
+      },
+      result: {
+        scanning: 'Escaneando documento',
+        notFound:
+          'No hemos encontrado ninguna coincidencia entre tu texto y nuestras etiquetas.',
+      },
+      save: {
+        title: 'Guarda el resultado',
+        body: 'Puedes volver a acceder a los resultados de tu texto escaneado sin necesidad de descargarte el archivo. Al guardar el resutado, se generará un enlace que pudes conservar y visitar siempre que lo necesites.',
+        button: 'Guardar',
+      },
+    },
+    components: {
+      scannerSunburst: {
+        title: 'Distribución de resultados',
+      },
+      scannerTable: {
+        sdg: 'ODS',
+        goal: 'Meta',
+        tag: 'Etiqueta',
+        findings: 'Apariciones',
+      },
+      scannerVisualizations: {
+        title: 'Distribución de los resultados',
+        zoom: 'Puedes hacer zoom haciendo clic en cada una de las porciones.',
+        maxShown: 'Se muestran un máximo de {num} términos.',
+        compare: {
+          title: 'Compara los resultados:',
+          info: 'Selecciona un texto de referencia, entre los que tenemos cargados en nuestro sistema, para poder comparar con los resultados de tu texto etiquetado.',
+          label: 'Comparar con...',
+          placeholder: 'Selecciona uno',
+          empty: 'Listado vacío',
+        },
+        detailed: {
+          title: 'Resultados detallados:',
+          infoLength:
+            'Aquí solo te mostramos 10 resultados de {num}, para ver el resto descarga el archivo.',
+          info: 'También puedes obtener los datos descargando el archivo.',
+          button: 'Descarga tus resultados',
+          downloadInfo: 'Los resultados se descargarán en formato Excel.',
+        },
+      },
+      scannerWordscloud: {
+        title: 'Términos con más apariciones',
       },
     },
   },
