@@ -161,7 +161,7 @@ const messages = {
             'We show you only 10 of {num} results, download the file to see the rest.',
           info: 'You can also get the data downloading the file.',
           button: 'Download the results',
-          buttonInfo: 'The results will be downloaded in Excel format.',
+          downloadInfo: 'The results will be downloaded in Excel format.',
         },
       },
       scannerWordscloud: {
