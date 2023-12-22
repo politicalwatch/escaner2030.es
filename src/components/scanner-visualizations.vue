@@ -2,7 +2,27 @@
   <div>
     <div>
       <h5>{{ $t('components.scannerVisualizations.title') }}:</h5>
-
+      <div class="o-grid">
+        <div class="o-grid__col u-8" ref="scannerListContainer">
+          <ScannerListViz
+            :result="result"
+            :styles="styles"
+            @update:globalSelectedSubtopic="globalSelectedSubtopic = $event"
+            :globalSelectedSubtopic="globalSelectedSubtopic"
+            :availableWidth="scannerListWidth"
+          >
+          </ScannerListViz>
+        </div>
+        <div class="o-grid__col u-4" ref="scannerRadialOdsOnctainer">
+          <ScannerRadialOds
+            :result="result"
+            :styles="styles"
+            @update:globalSelectedSubtopic="globalSelectedSubtopic = $event"
+            :globalSelectedSubtopic="globalSelectedSubtopic"
+            :availableWidth="scannerRadialOdsWidth"
+          ></ScannerRadialOds>
+        </div>
+      </div>
       <div class="o-grid">
         <div class="o-grid__col u-12 u-6@sm">
           <ScannerLegend
@@ -106,8 +126,9 @@
             <path
               fill="#2D4252"
               d="M12 5.647H8.571V0H3.43v5.647H0l6 6.588 6-6.588zm-12 8.47V16h12v-1.882H0z"
-            ></path></svg
-        ></span>
+            ></path>
+          </svg>
+        </span>
       </json-excel>
       <tipi-message type="info" icon>
         {{ $t('components.scannerVisualizations.detailed.downloadInfo') }}
@@ -123,6 +144,8 @@ import ScannerSunburst from '@/components/scanner-sunburst.vue';
 import ScannerBarchart from '@/components/scanner-barchart.vue';
 import ScannerTable from '@/components/scanner-table.vue';
 import ScannerLegend from '@/components/scanner-legend.vue';
+import ScannerListViz from '@/components/scanner-list-viz.vue';
+import ScannerRadialOds from '@/components/scanner-radial-ods.vue';
 import Multiselect from 'vue-multiselect';
 import preScannedTexts from '@/scanned';
 import config from '@/config';
@@ -139,6 +162,8 @@ export default {
     ScannerBarchart,
     ScannerTable,
     ScannerLegend,
+    ScannerListViz,
+    ScannerRadialOds,
     Multiselect,
     JsonExcel,
   },
@@ -160,6 +185,9 @@ export default {
       isLoadingDocuments: false,
       documents: [],
       compareOptions: [],
+      globalSelectedSubtopic: null,
+      scannerListWidth: null,
+      scannerRadialOdsWidth: null,
     };
   },
   methods: {
@@ -185,6 +213,11 @@ export default {
       this.resultToCompare = compareWith.length ? compareWith[0] : null;
     },
   },
+  mounted: function () {
+    this.scannerListWidth = this.$refs.scannerListContainer.offsetWidth;
+    this.scannerRadialOdsWidth = this.$refs.scannerRadialOdsOnctainer.offsetWidth;
+  },
+
 };
 </script>
 
