@@ -11,10 +11,10 @@
       </thead>
       <tbody>
         <tr v-for="(d, i) in datum" :key="i">
-          <td :data-label="Topic">{{ d.topic }}</td>
-          <td :data-label="Subtopic">{{ d.subtopic }}</td>
-          <td :data-label="Etiqueta">{{ d.tag }}</td>
-          <td :data-label="Ocurrencias">{{ d.times }}</td>
+          <td :data-label="'Topic'">{{ d.topic }}</td>
+          <td :data-label="'Subtopic'">{{ d.subtopic }}</td>
+          <td :data-label="'Etiqueta'">{{ d.tag }}</td>
+          <td :data-label="'Ocurrencias'">{{ d.times }}</td>
         </tr>
       </tbody>
     </table>
