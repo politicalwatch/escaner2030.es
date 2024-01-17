@@ -7,17 +7,6 @@ import VueGtag from 'vue-gtag';
 import '@politicalwatch/tipi-uikit/src/styles/main.scss';
 import messages from '@/i18n/messages';
 
-import * as Sentry from '@sentry/browser';
-import * as Integrations from '@sentry/integrations';
-
-let SENTRY_DSN = import.meta.env.VUE_APP_SENTRY_DSN;
-if (SENTRY_DSN) {
-  Sentry.init({
-    dsn: SENTRY_DSN,
-    integrations: [new Integrations.Vue({ Vue, attachProps: true })],
-  });
-}
-
 const i18n = createI18n({
   locale: import.meta.env.VITE_DEFAULT_LOCALE,
   fallbackLocale: import.meta.env.VITE_FALLBACK_LOCALE || 'es',
