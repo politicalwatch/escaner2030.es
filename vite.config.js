@@ -3,7 +3,6 @@ import { fileURLToPath, URL } from 'node:url';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import legacy from '@vitejs/plugin-legacy';
-import vitePluginRequire from 'vite-plugin-require';
 import svgLoader from 'vite-svg-loader';
 
 const svgoConfig = {
@@ -27,7 +26,6 @@ export default defineConfig({
       targets: ['ie >= 11'],
       additionalLegacyPolyfills: ['regenerator-runtime/runtime'],
     }),
-    vitePluginRequire(),
     svgLoader({
       svgoConfig,
     }),
