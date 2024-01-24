@@ -1,32 +1,28 @@
 <template>
   <div class="relative">
     <svg class="radialView" :width="availableWidth" :height="canvasHeight">
-      <g :transform="`translate(${availableWidth / 2 }, ${availableWidth / 2})`">
-        <path
-          v-for="d in dataHierarchy.descendants()"
-          :key="d.name"
-          :d="arc(d)"
-          :fill="d.data.color"
-          :stroke="d.depth === 3 ? '#fff':'transparent'"
-          @mouseover="onMouseOver($event, d)"
-          @mouseleave="onMouseOut($event, null)"
-        ></path>
-        <text  v-for="d in dataHierarchy.descendants().filter(d => d.depth < 3)"
-          :key="d.name"
-          :transform="`translate(${arc.centroid(d)})`"
-          :dy="0"
-          :dx="0"
-          text-anchor="middle"
-          font-size="0.8em"
-          fill= "#fff"
-          font-weight= "semibold"
-          pointer-events= "none"
-          @mouseover="onMouseOver($event, d)"
-          @mouseleave="onMouseOut($event, null)"
-          >
-          {{ d.data.code }}
-        </text>
-          
+      <g :transform="`translate(${availableWidth / 2 -margin}, ${availableWidth / 2})`">
+        <g v-for="(ods, index) in dataHierarchy" :key="index">
+          <path v-if="ods.times === 0"
+            :d="arcEmptyOds(ods)"
+            :fill="'#F4F4F4'"
+            @mouseover="selectedOds = ods"
+            @mouseleave="selectedOds = null"
+        
+          ></path>
+          <path v-for = "(subtopic, index2) in ods.children" :key="index2"
+            :d="arc(subtopic)"
+            :fill="subtopic.color"
+            stroke-width="1"
+            stroke="#fff"
+            @mouseover="$event => onMouseOver($event, subtopic)"
+            @mouseleave="onMouseOut($event, null)"
+            :class="{
+                active: globalSelectedSubtopic == subtopic.subtopic,
+            }"
+            >
+        </path>
+        </g>
       </g>
     </svg>
     <div class="simple-tooltip"  v-show="selectedSubtopic"
@@ -70,6 +66,12 @@ const props = defineProps({
 
 const margin = 40;
 
+const radius={
+  inner:45,
+  level1: 105,
+  level2: 135,
+  level3:180
+}
 
 const emits = defineEmits(['update:globalSelectedSubtopic']);
 
@@ -103,84 +105,71 @@ const dataHierarchy = computed(() => {
   // iterate over results.tags and add each tag to the correct ods (tag.topic) but we are not adding the same tag twice, we are actually adding the tag.subtopic
   props.result.tags.forEach((tag) => {
     const ods = odsList.find((ods) => ods.tag === tag.topic);
-    
-    ods.name=ods.tag;
-    ods.code = ods.odsIndex+''
-    if (!ods) return;
-
+    if (!ods) {
+      return;
+    }
     const subtopic = ods.children.find(
       (subtopic) => subtopic.subtopic === tag.subtopic
     );
-    if (subtopic) {      
-      subtopic.children.push({ name: tag.tag, value: tag.times, color0: ods.color, color:'#E6E3E3' });
-    } else {// add subtopic to ods
+    if (subtopic) {
+      subtopic.times += tag.times;
+    } else {
       ods.children.push({
-        code: tag.subtopic.split(' ')[0],
-        name: tag.subtopic,
-        subtopic: tag.subtopic,        
-        children: [{ name: tag.tag, value: tag.times,color0: ods.color, color:'#E6E3E3' }]
+        parent: ods,
+        subtopic: tag.subtopic,
+        times: tag.times,
       });
-    }    
+    }
+    ods.times += tag.times;
   });
-  // add a colour scale to each ods that will be used to color the subtopics. 
-  // the color scale takes the hue of the ods and creates a new scale around it according to the number of subtopics
-  // the colour range moves from the hue of the ods -30% lightness to the hue of the ods +30% lightness
-  odsList.forEach(ods => {
-    const colorScale = d3.scaleLinear()
-    .domain([0, Math.max(ods.children.length,2)])
-    .range([d3.hsl(ods.color).darker(0.4), d3.hsl(ods.color).brighter(0.4)]);
-    ods.children.forEach((subtopic, index) => {
-      subtopic.color = colorScale(index);
-    })
-  })
-  
 
-  // remove ods with no children from odslist
-  const newOdsList = odsList.filter(ods => ods.children.length > 0);
-  
+  // add a y position to each subtopic (the y position is the sum of the y position of the ods and the y position of the previous subtopic)
+  odsList.forEach((ods) => {
+    let y0 = 0;
+    ods.children.forEach((subtopic,i) => {
+        subtopic.timesRelative = subtopic.times / ods.times;
+      subtopic.y0 = y0;
+      y0 += subtopic.timesRelative;
+      subtopic.index = i;
+    });
+  });
 
-  const odsRoot= {
-    name: 'root',
-    children: newOdsList,
-    odsIndex: 0,
-    color: 'white',
-  };
-  
-  const newroot= d3.hierarchy(odsRoot).sum(d => d.value)
-
-  console.log(newroot)
-  // we are creating a sunburst chart and we want to add the init and end radius to each element in the hierarchy
-   const partition = d3.partition().size([2 * Math.PI, radius.level3])
-   partition(newroot);
-
-  return newroot;
+  // now create a colour scale for each subtopic. The colour scale has a domain from 0 to the number of subtopics of the ods and a range of varying hues of the ods colour
+    odsList.forEach((ods) => {
+        ods.children.forEach((subtopic) => {
+        subtopic.color = d3.interpolateHcl(
+            ods.color,
+            d3.rgb(ods.color).brighter(1.5)
+        )(subtopic.index / ods.children.length);
+        });
+    });
+  return odsList;
 });
 
 // build chart:
-const radius={
-  inner:45,
-  level1: 105,
-  level2: 135,
-  level3:180
-}
-const radiusArray = [radius.inner, radius.level1, radius.level2, radius.level3];
-
-
-
-const arc=  d3
+const innerRadius = 50;
+const outerRadius = computed(() => props.availableWidth / 2 - margin)
+const arc = computed(() =>
+  d3
     .arc()
-    .startAngle(function (d) {
-      return d.x0;
-    })
-    .endAngle(function (d) {
-      return d.x1;
-    })
-    .innerRadius(function (d) {
-      return radiusArray[d.depth-1];
-    })
-    .outerRadius(function (d) {
-      return radiusArray[d.depth];
-    });
+    .innerRadius((d) => y.value(d.y0))
+    .outerRadius((d) => y.value(d.y0 + d.timesRelative))
+    .startAngle((d) => x.value(d.parent.tag))
+    .endAngle((d) => x.value(d.parent.tag) + x.value.bandwidth())
+    .padAngle(0.01)
+    .padRadius(innerRadius)
+);
+
+const arcEmptyOds = computed(() =>
+  d3
+    .arc()
+    .innerRadius((d) => innerRadius)
+    .outerRadius((d) => outerRadius.value)
+    .startAngle((d) => x.value(d.tag))
+    .endAngle((d) => x.value(d.tag) + x.value.bandwidth())
+    .padAngle(0.01)
+    .padRadius(innerRadius)
+);
 
 const x = computed(() =>
   d3
@@ -194,7 +183,7 @@ const y = computed(() =>
   d3
     .scaleRadial()
     .domain([0,1])
-    .range([radius.inner, outerRadius.value])
+    .range([innerRadius, outerRadius.value])
 );
 
 
@@ -202,10 +191,10 @@ const y = computed(() =>
 const selectedSubtopic = ref(null);
 const tooltipPosition = ref({ x: 0, y: 0 });
 
-function onMouseOver (event, d) {  
-   selectedSubtopic.value = d;
-   tooltipPosition.value = { x: event.pageX, y: event.pageY };
-   emits('update:globalSelectedSubtopic', d.data.name);
+function onMouseOver (event, d) {
+  selectedSubtopic.value = d;
+  tooltipPosition.value = { x: event.pageX, y: event.pageY };
+  emits('update:globalSelectedSubtopic', d.subtopic);
 };
 function onMouseOut (event, d) {
   selectedSubtopic.value = null;

@@ -1,81 +1,84 @@
 <template>
   <div>
+    <div class="flex-tabs">
+      <a 
+        class="tab" 
+        :class="{'active': selectedTab === 'metas'}" 
+        @click="selectedTab = 'metas'"
+      >
+        Metas
+      </a>
+      <a 
+        class="tab" 
+        :class="{'active': selectedTab === 'etiquetas'}" 
+        @click="selectedTab = 'etiquetas'"
+      >
+        Etiquetas
+      </a>
+    </div>
     <svg class="list-of-topics" :width="availableWidth" :height="canvasHeight">
+      <g v-if="availableWidth!==null && selectedTab === 'metas'">
+        <g class="legend-minibar" :transform="`translate(${availableWidth-miniBar.width}, ${POSITIONS.interTopic})`">
+          <line x1="0" y1="6" :x2="miniBar.width" y2="6" stroke="#eee" stroke-width="1"></line>
+          <text x="0" y="0" fill="black" text-anchor="start" dominant-baseline="text-bottom" >
+            0
+          </text>
+          <text :x="miniBar.width" y="0" fill="black" text-anchor="end" dominant-baseline="text-bottom">
+            {{ maxSubtopicsCount }}
+          </text>
+        </g>
+        
+        <g  :transform="`translate(${0}, ${POSITIONS.interTopic})`">
+          <SubtopicToTag
+          v-for="(group, index) in allSubtopicsWithTags"
+          :group="group"
+            :styles="styles"
+            :availableWidth="availableWidth"
+            :interTopicPosition="POSITIONS.interTopic"
+            :radius="radiusScale(group.times)"
+            :globalSelectedSubtopic="globalSelectedSubtopic"
+            :maxTagsCount="maxTagsCount"
+            :maxSubtopicsCount="maxSubtopicsCount"
+            @expandSubtopic="expandSubTopic($event)"
+            @selectedTag="selectedTag = $event"
+            @selectedSubtopic="selectedSubtopic = $event"
+          >
+          </SubtopicToTag>
+      </g>
+      </g>
       <g
+        v-if="selectedTab === 'etiquetas'"
         v-for="(group, index) in tagsGroupedByName"
         :key="group.groupTagLabel"
-        :transform="`translate(0, ${group.y})`"
-        :class="{
-          active:
-            selectedTag?.groupTagLabel === group.groupTagLabel 
-        }"
+        :transform="`translate(0, ${group.y})`"       
       >
-        <!-- <line x1="0" y1="0" :x2="availableWidth" y2="0" stroke="red"></line> -->
-        <g class="tagCount">
-          <circle
-            class="normal"
-            :r="radiusScale(group.times)"
-            :cx="POSITIONS.interTopic"
-            :cy="POSITIONS.interTopic"
-          ></circle>
-          <circle
-            class="outline"
-            :r="POSITIONS.interTopic"
-            :cx="POSITIONS.interTopic"
-            :cy="POSITIONS.interTopic"
-          ></circle>
-          <text
-            :x="POSITIONS.interTopic"
-            :y="POSITIONS.interTopic + 1"
-            fill="white"
-            text-anchor="middle"
-            dominant-baseline="middle"
-          >
-            {{ group.times }}
-          </text>
-        </g>
-        <text
-          :x="POSITIONS.interTopic * 3"
-          :y="POSITIONS.interTopic - 6"
-          @mouseover="selectedTag = group"
-          @mouseleave="selectedTag = null"
-        >
-          {{ group.groupTagLabel }}
-        </text>
-        <g
-          v-for="(tag, index2) in group.children"
-          :key="index2"
-          class="subtopics"
+        <TagToSubtopicElement 
           :class="{
-            active: globalSelectedSubtopic == tag.subtopic,
+            active:
+              selectedTag?.groupTagLabel === group.groupTagLabel 
           }"
+          v-if="availableWidth!==null"
+          :group="group"
+          :styles="styles"
+          :availableWidth="availableWidth"
+          :interTopicPosition="POSITIONS.interTopic"
+          :radius="radiusScale(group.times)"
+          :globalSelectedSubtopic="globalSelectedSubtopic"
+          @selectedTag="selectedTag = $event"
+          @selectedSubtopic="selectedSubtopic = $event"
         >
-          <path :d="getPathForIndex(index2)" class="link"></path>
-          <circle
-            r="4"
-            :cx="tag.x"
-            :cy="tag.y"
-            :fill="getColorForTopic(tag.topic)"
-          ></circle>
-          <text
-            dominant-baseline="middle"
-            :x="tag.x + POSITIONS.interTopic"
-            :y="tag.y"
-            text-anchor="start"
-            @mouseover="selectedSubtopic = tag"
-            @mouseleave="selectedSubtopic = null"
-          >
-            {{ tag.subtopic }}
-          </text>
-        </g>
+        </TagToSubtopicElement>
       </g>
     </svg>
   </div>
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue';
-import { scaleSqrt, max, linkHorizontal } from 'd3';
+import { computed, ref, watch, watchEffect } from 'vue';
+import { scaleSqrt, max } from 'd3';
+import TagToSubtopicElement from './ScannerList/TagToSubtopicElement.vue';
+import SubtopicToTag from './ScannerList/subtopicToTag.vue';
+
 
 const props = defineProps({
   result: {
@@ -103,21 +106,6 @@ const POSITIONS = {
   fontSize: 12,
 };
 
-const link = linkHorizontal()
-  .x((d) => d.x)
-  .y((d) => d.y);
-
-function getPathForIndex(index) {
-  const startingPoint = {
-    x: index === 0 ? POSITIONS.interTopic * 2 : props.availableWidth * 0.4,
-    y: POSITIONS.interTopic,
-  };
-  const endingPoint = {
-    x: props.availableWidth * 0.6,
-    y: POSITIONS.interTopic * (index + 1),
-  };
-  return link({ source: startingPoint, target: endingPoint });
-}
 
 // Main function:
 // It groups and assign positions to the tag groups and tags
@@ -160,6 +148,73 @@ const tagsGroupedByName = computed(() => {
   return grouped;
 });
 
+
+const allSubtopicsWithTags= ref(null)
+
+watchEffect(() => {
+  const tags = props.result.tags;
+  const grouped = [];
+  tags.forEach((tag) => {
+    const existingGroup = grouped.find(
+      (group) => group.groupTagLabel === tag.subtopic
+    );
+    if (existingGroup) {
+      existingGroup.times += tag.times;
+      existingGroup.children.push(tag);
+    } else {
+      grouped.push({
+        groupTagLabel: tag.subtopic,
+        times: tag.times,
+        children: [tag],
+        topic: tag.topic,
+        expanded: false,
+      });
+    }
+  });
+  grouped.sort((a, b) => b.times - a.times);
+  let y = POSITIONS.interTopic;
+  const x = 0; // Assuming x is a constant value
+  grouped.forEach((group) => {
+    group.x = x;
+    group.y = y;
+    y += POSITIONS.interTopic + 6;
+    const xGroup = props.availableWidth * 0.6;
+    let yGroup = POSITIONS.interTopic;
+    group.children.forEach((child) => {
+      child.x = xGroup;
+      child.y = yGroup;
+      yGroup += POSITIONS.interTopic;
+    });
+  });
+  allSubtopicsWithTags.value=grouped
+})
+
+function updatePositionsSubtopicsWithTags (){
+  let y = POSITIONS.interTopic;
+  allSubtopicsWithTags.value.forEach((group) => {
+    group.y = y;
+    if(group.expanded)
+      y += 2*POSITIONS.interTopic * (group.children.length + 1) + 6;
+    else 
+      y += POSITIONS.interTopic + 6;
+    const xGroup = props.availableWidth * 0.6;
+    let yGroup = POSITIONS.interTopic;
+    group.children.forEach((child) => {
+      child.y = yGroup;
+      yGroup += 2*POSITIONS.interTopic+3;
+    });
+  });
+
+}
+
+
+
+function expandSubTopic(group) {
+  group.expanded = !group.expanded;
+  console.log(group);
+  updatePositionsSubtopicsWithTags()
+}
+
 const canvasHeight = computed(() => {
   const lastItem = tagsGroupedByName.value[tagsGroupedByName.value.length - 1];
 
@@ -171,9 +226,15 @@ const canvasHeight = computed(() => {
   ]);
 });
 //
+const maxTagsCount = computed(() => {
+  return max(tagsGroupedByName.value, (d) => d.times);
+});
+const maxSubtopicsCount = computed(() => {
+  return max(allSubtopicsWithTags.value, (d) => d.times);
+});
 const radiusScale = computed(() => {
   return scaleSqrt()
-    .domain([0, max(tagsGroupedByName.value, (d) => d.times)])
+    .domain([0, maxTagsCount.value])
     .range([3, POSITIONS.interTopic - 4]);
 });
 
@@ -204,54 +265,46 @@ watch(selectedSubtopic, (newValue, oldValue) => {
     return;
   } else emits('update:globalSelectedSubtopic', newValue.subtopic);
 });
+
+const selectedTab = ref('metas');
+
+const miniBar = {
+    width: 100,
+    height: 4,
+    margin: 10
+}
 </script>
 
 <style lang="scss" scoped>
-text {
-  font-size: 14px;
-  font-weight: 300;
-  cursor: default;
+
+// ui
+.flex-tabs{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 1rem;
+  column-gap: 2rem;
+}
+.tab{
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+  color:gray
+}
+.tab.active{
+  border-bottom: 2px solid #000;
+  color: #000;
 }
 
-.tagCount {
-  circle.normal {
-    fill: #d5d5d5;
-  }
-  circle.outline {
-    fill: none;
-    stroke: #d5d5d5;
-    stroke-width: 1px;
-    stroke-dasharray: 4 4;
-  }
-  text {
+.legend-minibar{
+  text{
     font-size: 12px;
     font-weight: bold;
     line-height: 12px;
   }
 }
 
-path.link {
-  stroke: #d5d5d5;
-  fill: none;
-}
-path.link.active,
-path.link:hover {
-  stroke: #000;
-}
 
-g.active {
-  text {
-    font-weight: bold;
-  }
-  path.link {
-    stroke: #000 !important;
-  }
-  circle.normal {
-    fill: #000;
-  }
-}
-
-.subtopics text:hover {
-  font-weight: bold !important;
-}
 </style>

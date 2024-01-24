@@ -3,6 +3,16 @@
     <div>
       <h5>{{ $t('components.scannerVisualizations.title') }}:</h5>
       <div class="o-grid">
+ 
+        <div class="o-grid__col u-4" ref="scannerRadialOdsOnctainer">
+          <ScannerRadialOds
+            :result="result"
+            :styles="styles"
+            @update:globalSelectedSubtopic="globalSelectedSubtopic = $event"
+            :globalSelectedSubtopic="globalSelectedSubtopic"
+            :availableWidth="scannerRadialOdsWidth"
+          ></ScannerRadialOds>
+        </div>
         <div class="o-grid__col u-8" ref="scannerListContainer">
           <ScannerListViz
             :result="result"
@@ -12,15 +22,6 @@
             :availableWidth="scannerListWidth"
           >
           </ScannerListViz>
-        </div>
-        <div class="o-grid__col u-4" ref="scannerRadialOdsOnctainer">
-          <ScannerRadialOds
-            :result="result"
-            :styles="styles"
-            @update:globalSelectedSubtopic="globalSelectedSubtopic = $event"
-            :globalSelectedSubtopic="globalSelectedSubtopic"
-            :availableWidth="scannerRadialOdsWidth"
-          ></ScannerRadialOds>
         </div>
       </div>
       <div class="o-grid">
