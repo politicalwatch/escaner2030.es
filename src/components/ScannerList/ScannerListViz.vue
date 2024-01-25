@@ -1,37 +1,68 @@
 <template>
-  <div>
-    <div class="flex-tabs">
-      <a 
-        class="tab" 
-        :class="{'active': selectedTab === 'metas'}" 
-        @click="selectedTab = 'metas'"
-      >
-        Metas
-      </a>
-      <a 
-        class="tab" 
-        :class="{'active': selectedTab === 'etiquetas'}" 
-        @click="selectedTab = 'etiquetas'"
-      >
-        Etiquetas
-      </a>
+  <div style="position: relative">
+    <div class="flex-header">
+      <div class="flex-tabs">
+        <a
+          class="tab"
+          :class="{ active: selectedTab === 'metas' }"
+          @click="selectedTab = 'metas'"
+        >
+          Metas
+        </a>
+        <a
+          class="tab"
+          :class="{ active: selectedTab === 'etiquetas' }"
+          @click="selectedTab = 'etiquetas'"
+        >
+          Etiquetas
+        </a>
+      </div>
+      <div>
+        <span v-if="selectedTab === 'metas'" class="legend-text">
+          Importancia según etiquetas
+        </span>
+      </div>
     </div>
     <svg class="list-of-topics" :width="availableWidth" :height="canvasHeight">
-      <g v-if="availableWidth!==null && selectedTab === 'metas'">
-        <g class="legend-minibar" :transform="`translate(${availableWidth-miniBar.width}, ${POSITIONS.interTopic})`">
-          <line x1="0" y1="6" :x2="miniBar.width" y2="6" stroke="#eee" stroke-width="1"></line>
-          <text x="0" y="0" fill="black" text-anchor="start" dominant-baseline="text-bottom" >
+      <g v-if="availableWidth !== null && selectedTab === 'metas'">
+        <g
+          class="legend-minibar"
+          :transform="`translate(${availableWidth - miniBar.width}, ${
+            POSITIONS.interTopic
+          })`"
+        >
+          <line
+            x1="0"
+            y1="6"
+            :x2="miniBar.width"
+            y2="6"
+            stroke="#eee"
+            stroke-width="1"
+          ></line>
+          <text
+            x="0"
+            y="0"
+            fill="black"
+            text-anchor="start"
+            dominant-baseline="text-bottom"
+          >
             0
           </text>
-          <text :x="miniBar.width" y="0" fill="black" text-anchor="end" dominant-baseline="text-bottom">
+          <text
+            :x="miniBar.width"
+            y="0"
+            fill="black"
+            text-anchor="end"
+            dominant-baseline="text-bottom"
+          >
             {{ maxSubtopicsCount }}
           </text>
         </g>
-        
-        <g  :transform="`translate(${0}, ${POSITIONS.interTopic})`">
+
+        <g :transform="`translate(${0}, ${POSITIONS.interTopic})`">
           <SubtopicToTag
-          v-for="(group, index) in allSubtopicsWithTags"
-          :group="group"
+            v-for="(group, index) in allSubtopicsWithTags"
+            :group="group"
             :styles="styles"
             :availableWidth="availableWidth"
             :interTopicPosition="POSITIONS.interTopic"
@@ -42,22 +73,20 @@
             @expandSubtopic="expandSubTopic($event)"
             @selectedTag="selectedTag = $event"
             @selectedSubtopic="selectedSubtopic = $event"
-          >
-          </SubtopicToTag>
-      </g>
+          ></SubtopicToTag>
+        </g>
       </g>
       <g
         v-if="selectedTab === 'etiquetas'"
         v-for="(group, index) in tagsGroupedByName"
         :key="group.groupTagLabel"
-        :transform="`translate(0, ${group.y})`"       
+        :transform="`translate(0, ${group.y})`"
       >
-        <TagToSubtopicElement 
+        <TagToSubtopicElement
           :class="{
-            active:
-              selectedTag?.groupTagLabel === group.groupTagLabel 
+            active: selectedTag?.groupTagLabel === group.groupTagLabel,
           }"
-          v-if="availableWidth!==null"
+          v-if="availableWidth !== null"
           :group="group"
           :styles="styles"
           :availableWidth="availableWidth"
@@ -66,8 +95,7 @@
           :globalSelectedSubtopic="globalSelectedSubtopic"
           @selectedTag="selectedTag = $event"
           @selectedSubtopic="selectedSubtopic = $event"
-        >
-        </TagToSubtopicElement>
+        ></TagToSubtopicElement>
       </g>
     </svg>
   </div>
@@ -76,9 +104,8 @@
 <script setup>
 import { computed, ref, watch, watchEffect } from 'vue';
 import { scaleSqrt, max } from 'd3';
-import TagToSubtopicElement from './ScannerList/TagToSubtopicElement.vue';
-import SubtopicToTag from './ScannerList/subtopicToTag.vue';
-
+import TagToSubtopicElement from './TagToSubtopicElement.vue';
+import SubtopicToTag from './SubtopicToTag.vue';
 
 const props = defineProps({
   result: {
@@ -106,11 +133,11 @@ const POSITIONS = {
   fontSize: 12,
 };
 
-
 // Main function:
 // It groups and assign positions to the tag groups and tags
+const tagsGroupedByName = ref(null);
 
-const tagsGroupedByName = computed(() => {
+watchEffect(() => {
   const tags = props.result.tags;
   const grouped = [];
   tags.forEach((tag) => {
@@ -119,20 +146,24 @@ const tagsGroupedByName = computed(() => {
     );
     if (existingGroup) {
       existingGroup.times += tag.times;
-      existingGroup.children.push(tag);
+      existingGroup.children.push({ ...tag });
     } else {
       grouped.push({
         groupTagLabel: tag.tag,
         times: tag.times,
-        children: [tag],
+        children: [{ ...tag }],
       });
     }
   });
   grouped.sort((a, b) => b.times - a.times);
+  tagsGroupedByName.value = grouped;
+  updatePositionsTagsGroupedByName();
+});
 
+function updatePositionsTagsGroupedByName() {
   let y = POSITIONS.interTopic;
   const x = 0; // Assuming x is a constant value
-  grouped.forEach((group) => {
+  tagsGroupedByName.value.forEach((group) => {
     group.x = x;
     group.y = y;
     y += POSITIONS.interTopic * (group.children.length + 1) + 6;
@@ -144,13 +175,11 @@ const tagsGroupedByName = computed(() => {
       yGroup += POSITIONS.interTopic;
     });
   });
+  return tagsGroupedByName.value;
+}
 
-  return grouped;
-});
-
-
-const allSubtopicsWithTags= ref(null)
-
+/************* sorting in topic mode (list of topics that expand to related tags) */
+const allSubtopicsWithTags = ref(null);
 watchEffect(() => {
   const tags = props.result.tags;
   const grouped = [];
@@ -160,70 +189,67 @@ watchEffect(() => {
     );
     if (existingGroup) {
       existingGroup.times += tag.times;
-      existingGroup.children.push(tag);
+      existingGroup.children.push({ ...tag });
     } else {
       grouped.push({
         groupTagLabel: tag.subtopic,
         times: tag.times,
-        children: [tag],
+        children: [{ ...tag }],
         topic: tag.topic,
         expanded: false,
       });
     }
   });
+
+  //group by importance
   grouped.sort((a, b) => b.times - a.times);
+  allSubtopicsWithTags.value = grouped;
+  updatePositionsSubtopicsWithTags(grouped);
+});
+
+function updatePositionsSubtopicsWithTags(listOfTags) {
   let y = POSITIONS.interTopic;
-  const x = 0; // Assuming x is a constant value
-  grouped.forEach((group) => {
-    group.x = x;
+  const x = 0;
+  listOfTags.forEach((group) => {
     group.y = y;
-    y += POSITIONS.interTopic + 6;
+    group.x = x;
+    if (group.expanded)
+      y += 2 * POSITIONS.interTopic * (group.children.length + 1.5); //
+    else y += POSITIONS.interTopic + 6;
+
     const xGroup = props.availableWidth * 0.6;
-    let yGroup = POSITIONS.interTopic;
+    let yGroup = POSITIONS.interTopic * 2; // spacing for first item
     group.children.forEach((child) => {
       child.x = xGroup;
       child.y = yGroup;
-      yGroup += POSITIONS.interTopic;
+      yGroup += 2 * POSITIONS.interTopic + 3;
     });
   });
-  allSubtopicsWithTags.value=grouped
-})
-
-function updatePositionsSubtopicsWithTags (){
-  let y = POSITIONS.interTopic;
-  allSubtopicsWithTags.value.forEach((group) => {
-    group.y = y;
-    if(group.expanded)
-      y += 2*POSITIONS.interTopic * (group.children.length + 1) + 6;
-    else 
-      y += POSITIONS.interTopic + 6;
-    const xGroup = props.availableWidth * 0.6;
-    let yGroup = POSITIONS.interTopic;
-    group.children.forEach((child) => {
-      child.y = yGroup;
-      yGroup += 2*POSITIONS.interTopic+3;
-    });
-  });
-
+  return listOfTags;
 }
 
-
-
 function expandSubTopic(group) {
+  console.log(group.expanded);
   group.expanded = !group.expanded;
-  console.log(group);
-  updatePositionsSubtopicsWithTags()
+  updatePositionsSubtopicsWithTags(allSubtopicsWithTags.value);
 }
 
 const canvasHeight = computed(() => {
-  const lastItem = tagsGroupedByName.value[tagsGroupedByName.value.length - 1];
+  if (selectedTab.value === 'etiquetas') {
+    const lastItem =
+      tagsGroupedByName.value[tagsGroupedByName.value.length - 1];
 
-  return max([
-    300,
-    lastItem.y +
-      lastItem.children.length * POSITIONS.interTopic +
-      POSITIONS.interTopic * 2,
-  ]);
+    return max([
+      300,
+      lastItem.y +
+        lastItem.children.length * POSITIONS.interTopic +
+        POSITIONS.interTopic * 2,
+    ]);
+  } else {
+    const lastItem =
+      allSubtopicsWithTags.value[allSubtopicsWithTags.value.length - 1];
+    return max([300, lastItem.y + POSITIONS.interTopic * 4]);
+  }
 });
 //
 const maxTagsCount = computed(() => {
@@ -246,12 +272,10 @@ function getColorForTopic(topic) {
 const selectedTag = ref(null);
 const selectedSubtopic = ref(null);
 watch(selectedTag, (newValue, oldValue) => {
-  console.log(newValue);
   if (newValue === null) {
     emits('selectedTag', null);
     return;
   } else {
-    console.log(newValue.children.map((child) => child.subtopic));
     emits(
       'update:globalSelectedTag',
       newValue.children.map((child) => child.subtopic)
@@ -259,7 +283,6 @@ watch(selectedTag, (newValue, oldValue) => {
   }
 });
 watch(selectedSubtopic, (newValue, oldValue) => {
-  console.log(newValue);
   if (newValue === null) {
     emits('update:globalSelectedSubtopic', null);
     return;
@@ -269,42 +292,53 @@ watch(selectedSubtopic, (newValue, oldValue) => {
 const selectedTab = ref('metas');
 
 const miniBar = {
-    width: 100,
-    height: 4,
-    margin: 10
-}
+  width: 100,
+  height: 4,
+  margin: 10,
+};
 </script>
 
 <style lang="scss" scoped>
-
 // ui
-.flex-tabs{
+.flex-tabs {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin-bottom: 1rem;
   column-gap: 2rem;
 }
-.tab{
-  cursor: pointer;
-  padding: 0.5rem 1rem;
-  border-bottom: 2px solid transparent;
-  transition: all 0.2s ease-in-out;
-  text-decoration: none;
-  color:gray
-}
-.tab.active{
-  border-bottom: 2px solid #000;
-  color: #000;
-}
-
-.legend-minibar{
-  text{
+.flex-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0rem;
+  column-gap: 2rem;
+  position: sticky;
+  .legend-text {
     font-size: 12px;
     font-weight: bold;
     line-height: 12px;
   }
 }
+.tab {
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+  color: gray;
+}
+.tab.active {
+  border-bottom: 2px solid #000;
+  color: #000;
+  font-weight: bold;
+  line-height: 50%;
+}
 
-
+.legend-minibar {
+  text {
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 12px;
+  }
+}
 </style>

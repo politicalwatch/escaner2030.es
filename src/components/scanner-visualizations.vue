@@ -3,26 +3,8 @@
     <div>
       <h5>{{ $t('components.scannerVisualizations.title') }}:</h5>
       <div class="o-grid">
- 
-        <div class="o-grid__col u-4" ref="scannerRadialOdsOnctainer">
-          <ScannerRadialOds
-            :result="result"
-            :styles="styles"
-            @update:globalSelectedSubtopic="globalSelectedSubtopic = $event"
-            :globalSelectedSubtopic="globalSelectedSubtopic"
-            :availableWidth="scannerRadialOdsWidth"
-          ></ScannerRadialOds>
-        </div>
-        <div class="o-grid__col u-8" ref="scannerListContainer">
-          <ScannerListViz
-            :result="result"
-            :styles="styles"
-            @update:globalSelectedSubtopic="globalSelectedSubtopic = $event"
-            :globalSelectedSubtopic="globalSelectedSubtopic"
-            :availableWidth="scannerListWidth"
-          >
-          </ScannerListViz>
-        </div>
+        <scanner-list-viz-container :styles="styles" :result="result">
+        </scanner-list-viz-container>
       </div>
       <div class="o-grid">
         <div class="o-grid__col u-12 u-6@sm">
@@ -145,8 +127,7 @@ import ScannerSunburst from '@/components/scanner-sunburst.vue';
 import ScannerBarchart from '@/components/scanner-barchart.vue';
 import ScannerTable from '@/components/scanner-table.vue';
 import ScannerLegend from '@/components/scanner-legend.vue';
-import ScannerListViz from '@/components/scanner-list-viz.vue';
-import ScannerRadialOds from '@/components/scanner-radial-ods.vue';
+import ScannerListVizContainer from '@/components/ScannerList/ScannerListVizContainer.vue';
 import Multiselect from 'vue-multiselect';
 import preScannedTexts from '@/scanned';
 import config from '@/config';
@@ -163,8 +144,7 @@ export default {
     ScannerBarchart,
     ScannerTable,
     ScannerLegend,
-    ScannerListViz,
-    ScannerRadialOds,
+    ScannerListVizContainer,
     Multiselect,
     JsonExcel,
   },
@@ -214,11 +194,6 @@ export default {
       this.resultToCompare = compareWith.length ? compareWith[0] : null;
     },
   },
-  mounted: function () {
-    this.scannerListWidth = this.$refs.scannerListContainer.offsetWidth;
-    this.scannerRadialOdsWidth = this.$refs.scannerRadialOdsOnctainer.offsetWidth;
-  },
-
 };
 </script>
 
