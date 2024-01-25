@@ -23,12 +23,23 @@
         </span>
       </div>
     </div>
+    <div class="filters-list">
+      <div v-for="clickedElement in clickedArray">
+        <span
+          class="pill"
+          :style="{ backgroundColor: getColorForTopic(clickedElement.name) }"
+          @click="emits('update:clickedElement', clickedElement)"
+        >
+          {{ clickedElement.name }}
+        </span>
+      </div>
+    </div>
     <svg class="list-of-topics" :width="availableWidth" :height="canvasHeight">
       <g v-if="availableWidth !== null && selectedTab === 'metas'">
         <g
           class="legend-minibar"
           :transform="`translate(${availableWidth - miniBar.width}, ${
-            POSITIONS.interTopic
+            POSITIONS.interTopic / 2
           })`"
         >
           <line
@@ -59,7 +70,7 @@
           </text>
         </g>
 
-        <g :transform="`translate(${0}, ${POSITIONS.interTopic})`">
+        <g :transform="`translate(${0}, ${POSITIONS.interTopic / 2})`">
           <SubtopicToTag
             v-for="(group, index) in allSubtopicsWithTags"
             :group="group"
@@ -67,12 +78,11 @@
             :availableWidth="availableWidth"
             :interTopicPosition="POSITIONS.interTopic"
             :radius="radiusScale(group.times)"
-            :globalSelectedSubtopic="globalSelectedSubtopic"
             :maxTagsCount="maxTagsCount"
             :maxSubtopicsCount="maxSubtopicsCount"
+            :mouseOverElement="mouseOverElement"
             @expandSubtopic="expandSubTopic($event)"
-            @selectedTag="selectedTag = $event"
-            @selectedSubtopic="selectedSubtopic = $event"
+            @update:mouseOverElement="emits('update:mouseOverElement', $event)"
           ></SubtopicToTag>
         </g>
       </g>
@@ -83,18 +93,14 @@
         :transform="`translate(0, ${group.y})`"
       >
         <TagToSubtopicElement
-          :class="{
-            active: selectedTag?.groupTagLabel === group.groupTagLabel,
-          }"
           v-if="availableWidth !== null"
           :group="group"
           :styles="styles"
           :availableWidth="availableWidth"
           :interTopicPosition="POSITIONS.interTopic"
           :radius="radiusScale(group.times)"
-          :globalSelectedSubtopic="globalSelectedSubtopic"
-          @selectedTag="selectedTag = $event"
-          @selectedSubtopic="selectedSubtopic = $event"
+          :mouseOverElement="mouseOverElement"
+          @update:mouseOverElement="emits('update:mouseOverElement', $event)"
         ></TagToSubtopicElement>
       </g>
     </svg>
@@ -121,40 +127,87 @@ const props = defineProps({
     type: Number,
     default: 900,
   },
-  globalSelectedSubtopic: {
-    type: String || null,
+  mouseOverElement: {
+    type: Object || null,
     default: null,
+  },
+  clickedArray: {
+    type: Array,
+    default: () => [],
   },
 });
 
-const emits = defineEmits(['selectedTag', 'update:globalSelectedSubtopic']);
+const emits = defineEmits(['update:mouseOverElement', 'update:clickedElement']);
 const POSITIONS = {
   interTopic: 24,
   fontSize: 12,
 };
 
 // Main function:
-// It groups and assign positions to the tag groups and tags
+// It groups and assign positions to the tag groups and subtopics
 const tagsGroupedByName = ref(null);
 
 watchEffect(() => {
   const tags = props.result.tags;
-  const grouped = [];
+  let grouped = [];
   tags.forEach((tag) => {
     const existingGroup = grouped.find(
       (group) => group.groupTagLabel === tag.tag
     );
     if (existingGroup) {
       existingGroup.times += tag.times;
-      existingGroup.children.push({ ...tag });
+      existingGroup.children.push({
+        depth: 2,
+        level1: tag.subtopic.split(' ')[0].split('.')[0],
+        level2: tag.subtopic.split(' ')[0].split('.')[1],
+        ...tag,
+      });
     } else {
       grouped.push({
         groupTagLabel: tag.tag,
+        depth: 3,
+        level1: tag.subtopic.split(' ')[0].split('.')[0],
+        level2: tag.subtopic.split(' ')[0].split('.')[1],
         times: tag.times,
-        children: [{ ...tag }],
+        children: [
+          {
+            depth: 2,
+            level1: tag.subtopic.split(' ')[0].split('.')[0],
+            level2: tag.subtopic.split(' ')[0].split('.')[1],
+            ...tag,
+          },
+        ],
       });
     }
   });
+  // filter out elements in case there are elements in the clickedArray.
+  // if an element in clicked array has level 1, then we filter out all the grouped that have a different level 1
+  // if an element in clicked array has level 2, then we filter out all the grouped that have a different level 2
+  // at the end grouped only contains the elements that are in the clicked array
+  if (props.clickedArray.length > 0) {
+    const clickedArray = props.clickedArray;
+    const clickedArrayLevel1 = clickedArray.filter(
+      (element) => element.level === 1
+    );
+    const clickedArrayLevel2 = clickedArray.filter(
+      (element) => element.level === 2
+    );
+    if (clickedArrayLevel1.length > 0) {
+      grouped = grouped.filter((element) =>
+        clickedArrayLevel1.find(
+          (clickedElement) => clickedElement.level1 === element.level1
+        )
+      );
+    }
+    if (clickedArrayLevel2.length > 0) {
+      grouped = grouped.filter((element) =>
+        clickedArrayLevel2.find(
+          (clickedElement) => clickedElement.level2 === element.level2
+        )
+      );
+    }
+  }
+
   grouped.sort((a, b) => b.times - a.times);
   tagsGroupedByName.value = grouped;
   updatePositionsTagsGroupedByName();
@@ -182,26 +235,68 @@ function updatePositionsTagsGroupedByName() {
 const allSubtopicsWithTags = ref(null);
 watchEffect(() => {
   const tags = props.result.tags;
-  const grouped = [];
+  let grouped = [];
   tags.forEach((tag) => {
     const existingGroup = grouped.find(
       (group) => group.groupTagLabel === tag.subtopic
     );
     if (existingGroup) {
       existingGroup.times += tag.times;
-      existingGroup.children.push({ ...tag });
+      existingGroup.children.push({
+        depth: 3,
+        level1: tag.subtopic.split(' ')[0].split('.')[0],
+        level2: tag.subtopic.split(' ')[0].split('.')[1],
+        ...tag,
+      });
     } else {
       grouped.push({
         groupTagLabel: tag.subtopic,
         times: tag.times,
-        children: [{ ...tag }],
+        level1: tag.subtopic.split(' ')[0].split('.')[0],
+        level2: tag.subtopic.split(' ')[0].split('.')[1],
+        depth: 2,
+        children: [
+          {
+            depth: 3,
+            level1: tag.subtopic.split(' ')[0].split('.')[0],
+            level2: tag.subtopic.split(' ')[0].split('.')[1],
+            ...tag,
+          },
+        ],
         topic: tag.topic,
         expanded: false,
       });
     }
   });
+  // filter out elements in case there are elements in the clickedArray.
+  // if an element in clicked array has level 1, then we filter out all the grouped that have a different level 1
+  // if an element in clicked array has level 2, then we filter out all the grouped that have a different level 2
+  // at the end grouped only contains the elements that are in the clicked array
+  if (props.clickedArray.length > 0) {
+    const clickedArray = props.clickedArray;
+    const clickedArrayLevel1 = clickedArray.filter(
+      (element) => element.level === 1
+    );
+    const clickedArrayLevel2 = clickedArray.filter(
+      (element) => element.level === 2
+    );
+    if (clickedArrayLevel1.length > 0) {
+      grouped = grouped.filter((element) =>
+        clickedArrayLevel1.find(
+          (clickedElement) => clickedElement.level1 === element.level1
+        )
+      );
+    }
+    if (clickedArrayLevel2.length > 0) {
+      grouped = grouped.filter((element) =>
+        clickedArrayLevel2.find(
+          (clickedElement) => clickedElement.level2 === element.level2
+        )
+      );
+    }
+  }
 
-  //group by importance
+  //sort by importance
   grouped.sort((a, b) => b.times - a.times);
   allSubtopicsWithTags.value = grouped;
   updatePositionsSubtopicsWithTags(grouped);
@@ -340,5 +435,31 @@ const miniBar = {
     font-weight: bold;
     line-height: 12px;
   }
+}
+
+span.pill {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  background-color: #eee;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 12px;
+  color: white;
+  cursor: pointer;
+
+  &:hover::after {
+    content: 'x';
+    margin-left: 0.5rem;
+    cursor: pointer;
+  }
+}
+
+.filters-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 </style>

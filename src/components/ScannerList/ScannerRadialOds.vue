@@ -3,13 +3,15 @@
     <svg class="radialView" :width="availableWidth" :height="canvasHeight">
       <g :transform="`translate(${availableWidth / 2}, ${availableWidth / 2})`">
         <path
-          v-for="d in dataHierarchy.descendants()"
+          v-for="d in dataHierarchy.descendants().filter((d) => d.depth > 0)"
           :key="d.name"
           :d="arc(d)"
           :fill="d.data.color"
           :stroke="d.depth === 3 ? '#fff' : 'transparent'"
+          :class="`depth-` + d.depth + ' ' + getClassesForHovered(d)"
           @mouseover="onMouseOver($event, d)"
           @mouseleave="onMouseOut($event, null)"
+          @click="onClick($event, d)"
         ></path>
         <text
           v-for="d in dataHierarchy
@@ -24,8 +26,6 @@
           fill="#fff"
           font-weight="600"
           pointer-events="none"
-          @mouseover="onMouseOver($event, d)"
-          @mouseleave="onMouseOut($event, null)"
         >
           {{ d.data.code }}
         </text>
@@ -57,7 +57,6 @@
 <script setup>
 // d3 functions coming from : https://observablehq.com/@yieldtactics/radial-stacked-bar-chart
 import * as d3 from 'd3';
-window.dd3 = d3;
 import { computed, ref } from 'vue';
 const props = defineProps({
   result: {
@@ -73,15 +72,19 @@ const props = defineProps({
     type: Number,
     default: 400,
   },
-  globalSelectedSubtopic: {
-    type: String || null,
+  mouseOverElement: {
+    type: Object || null,
     default: null,
+  },
+  clickedArray: {
+    type: Array,
+    default: () => [],
   },
 });
 
 const margin = 40;
 
-const emits = defineEmits(['update:globalSelectedSubtopic']);
+const emits = defineEmits(['update:mouseOverElement', 'update:clickedElement']);
 
 const canvasHeight = computed(() => {
   return props.availableWidth;
@@ -116,6 +119,8 @@ const dataHierarchy = computed(() => {
 
     ods.name = ods.tag;
     ods.code = ods.odsIndex + '';
+    ods.level1 = ods.code;
+    ods.level2 = '';
     if (!ods) return;
 
     const subtopic = ods.children.find(
@@ -125,21 +130,26 @@ const dataHierarchy = computed(() => {
       subtopic.children.push({
         name: tag.tag,
         value: tag.times,
-        color0: ods.color,
-        color: '#E6E3E3',
+        color: ods.color,
+
+        level1: ods.code,
+        level2: subtopic.level2,
       });
     } else {
       // add subtopic to ods
       ods.children.push({
         code: tag.subtopic.split(' ')[0],
+        level1: ods.code,
+        level2: tag.subtopic.split(' ')[0].split('.')[1],
         name: tag.subtopic,
         subtopic: tag.subtopic,
         children: [
           {
             name: tag.tag,
             value: tag.times,
-            color0: ods.color,
-            color: '#E6E3E3',
+            color: ods.color,
+            level1: ods.code,
+            level2: tag.subtopic.split(' ')[0].split('.')[1],
           },
         ],
       });
@@ -225,17 +235,93 @@ const selectedSubtopic = ref(null);
 const tooltipPosition = ref({ x: 0, y: 0 });
 
 function onMouseOver(event, d) {
+  console.log(d);
   selectedSubtopic.value = d;
   tooltipPosition.value = { x: event.pageX, y: event.pageY };
-  emits('update:globalSelectedSubtopic', d.data.name);
+  emits('update:mouseOverElement', {
+    name: d.data.name,
+    level: d.depth,
+    level1: d.data.level1,
+    level2: d.data.level2,
+    source: 'radial',
+  });
 }
 function onMouseOut(event, d) {
   selectedSubtopic.value = null;
-  emits('update:globalSelectedSubtopic', null);
+  emits('update:mouseOverElement', null);
+}
+function onClick(event, d) {
+  if (d.depth != 1) return;
+  selectedSubtopic.value = d;
+  tooltipPosition.value = { x: event.pageX, y: event.pageY };
+  emits('update:clickedElement', {
+    name: d.data.name,
+    level: d.depth,
+    level1: d.data.level1,
+    level2: d.data.level2,
+    source: 'radial',
+  });
+}
+
+function getClassesForHovered(d) {
+  // nothing selected
+  let classes = '';
+  if (!props.mouseOverElement && !props.clickedArray.length) {
+    if (d.depth === 3) return 'hoveredOut';
+    else return '';
+  }
+  // clicked
+  if (props.clickedArray.length) {
+    const clickedArray = props.clickedArray;
+    for (let i = 0; i < props.clickedArray.length; i++) {
+      const clickedElement = props.clickedArray[i];
+      const clickedLevel = clickedElement.level;
+      if (clickedLevel === 1) {
+        if (clickedElement.level1 === d.data.level1) classes += 'active';
+      }
+      if (clickedLevel === 2) {
+        if (
+          clickedElement.level2 === d.data.level2 &&
+          clickedElement.level1 === d.data.level1
+        )
+          classes += 'active';
+      }
+      if (clickedLevel === 3)
+        if (d.data.name === clickedElement.name) classes += 'active';
+    }
+    if (classes === '') classes += 'inactive';
+  }
+
+  if (props.mouseOverElement) {
+    const level = props.mouseOverElement.level;
+    if (level === 1) {
+      if (props.mouseOverElement.level1 === d.data.level1) return 'hovered';
+    }
+    if (level === 2) {
+      if (
+        props.mouseOverElement.level2 === d.data.level2 &&
+        props.mouseOverElement.level1 === d.data.level1
+      )
+        return 'hovered';
+    }
+    if (level === 3) {
+      if (d.data.name == props.mouseOverElement.name) {
+        return 'hovered';
+      }
+    }
+
+    classes += ' hoveredOut';
+  }
+  return classes;
 }
 </script>
 
 <style lang="scss" scoped>
+.radialView {
+  path.depth-1 {
+    cursor: pointer;
+  }
+}
 .simple-tooltip {
   position: absolute;
   z-index: 10;
@@ -245,7 +331,8 @@ function onMouseOut(event, d) {
   border-radius: 5px;
   pointer-events: none;
 }
-path:hover {
+path:hover,
+path.hovered {
   opacity: 0.8;
 }
 
@@ -260,5 +347,10 @@ path.active {
   background-color: #222;
   color: white;
   padding: 8px;
+}
+
+.hoveredOut,
+.inactive {
+  fill: #efefef !important;
 }
 </style>

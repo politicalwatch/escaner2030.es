@@ -4,9 +4,11 @@
       <ScannerRadialOds
         :result="result"
         :styles="styles"
-        @update:globalSelectedSubtopic="globalSelectedSubtopic = $event"
-        :globalSelectedSubtopic="globalSelectedSubtopic"
+        @update:mouseOverElement="hoveredObject = $event"
+        @update:clickedElement="manageClickedArray($event)"
+        :mouseOverElement="hoveredObject"
         :availableWidth="scannerRadialOdsWidth"
+        :clicked-array="clickedArray"
       ></ScannerRadialOds>
     </div>
   </div>
@@ -15,9 +17,11 @@
     <ScannerListViz
       :result="result"
       :styles="styles"
-      @update:globalSelectedSubtopic="globalSelectedSubtopic = $event"
-      :globalSelectedSubtopic="globalSelectedSubtopic"
+      @update:mouseOverElement="hoveredObject = $event"
+      @update:clickedElement="manageClickedArray($event)"
+      :mouseOverElement="hoveredObject"
       :availableWidth="scannerListWidth"
+      :clicked-array="clickedArray"
     >
     </ScannerListViz>
   </div>
@@ -47,13 +51,40 @@ export default {
       globalSelectedSubtopic: null,
       scannerListWidth: null,
       scannerRadialOdsWidth: null,
+      hoveredObject: null,
+      /*{
+        name: '',
+        level: 0, // 1 2 3
+        level1: '',
+        level2: '',
+        source: '0', // list or radial
+      },*/
+      clickedArray: [],
     };
   },
   mounted: function () {
+    this.hoveredObject = null;
     this.scannerListWidth = this.$refs.scannerListContainer.offsetWidth - 32;
     console.log(this.scannerListWidth);
     this.scannerRadialOdsWidth =
       this.$refs.scannerRadialOdsOnctainer.offsetWidth;
+  },
+  methods: {
+    manageClickedArray(clickedObject) {
+      if (clickedObject === null) {
+        this.clickedArray = [];
+        return;
+      }
+      const clickedobj = this.clickedArray.find(
+        (element) => element.name === clickedObject.name
+      );
+      if (clickedobj) {
+        const index = this.clickedArray.indexOf(clickedobj);
+        this.clickedArray.splice(index, 1);
+      } else {
+        this.clickedArray.push(clickedObject);
+      }
+    },
   },
 };
 </script>

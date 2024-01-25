@@ -1,5 +1,8 @@
 <template>
-  <g :transform="`translate(0, ${group.y})`">
+  <g
+    :transform="`translate(0, ${group.y})`"
+    :class="getClassesForHovered(group)"
+  >
     <g
       class="help-circle"
       :class="{
@@ -30,23 +33,31 @@
         fill="none"
         v-show="hovered && !group.expanded"
       />
-      <line
-        x1="6"
-        y1="-4"
-        x2="18"
-        y2="-4"
-        stroke="black"
-        stroke-width="3"
-        fill="none"
-        v-show="group.expanded"
-      />
-      <text x="40" text-anchor="start" font-size="14px" font-weight="600">{{
-        IdAndName.id
-      }}</text>
-      <text x="88" text-anchor="start" font-size="14px">
-        {{ IdAndName.name }}
-      </text>
     </g>
+    <line
+      x1="6"
+      y1="-4"
+      x2="18"
+      y2="-4"
+      stroke="black"
+      stroke-width="3"
+      fill="none"
+      v-show="group.expanded"
+    />
+    <text x="40" text-anchor="start" font-size="14px" font-weight="500">{{
+      IdAndName.id
+    }}</text>
+    <text
+      x="88"
+      text-anchor="start"
+      font-size="14px"
+      font-weight="300"
+      @mouseover="onMouseOver(group)"
+      @mouseleave="onMouseLeave(group)"
+    >
+      {{ IdAndName.name }}
+    </text>
+
     <g :transform="`translate(${availableWidth - miniBar.width},0)`">
       <rect
         :width="miniBar.width"
@@ -68,8 +79,14 @@
       v-for="(tag, index2) in group.children"
       :transform="`translate(0, ${tag.y})`"
       v-if="group.expanded"
+      :class="getClassesForHoveredTag(tag)"
     >
-      <text x="80" y="-4">
+      <text
+        x="80"
+        y="-4"
+        @mouseover="onMouseOver(tag)"
+        @mouseleave="onMouseLeave(tag)"
+      >
         {{ tag.tag }}
       </text>
       <path :d="getPathForIndex(tag, index2)" class="link"></path>
@@ -112,7 +129,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, isReactive, ref } from 'vue';
 import {
   linkHorizontal,
   scaleSqrt,
@@ -120,6 +137,7 @@ import {
   symbol,
   symbolPlus,
   line,
+  isoFormat,
 } from 'd3';
 const props = defineProps({
   group: {
@@ -143,8 +161,12 @@ const props = defineProps({
     type: Number,
     required: true,
   },
-  globalSelectedSubtopic: {
-    type: String || null,
+  mouseOverElement: {
+    type: Object || null,
+    default: null,
+  },
+  clickedElement: {
+    type: Object || null,
     default: null,
   },
   maxTagsCount: {
@@ -177,7 +199,11 @@ const IdAndName = computed(() => {
 });
 
 const hovered = ref(false);
-const emits = defineEmits(['expandSubtopic', 'update:globalSelectedSubtopic']);
+const emits = defineEmits([
+  'expandSubtopic',
+  'update:mouseOverElement',
+  'update:clickedElement',
+]);
 function expandMe() {
   emits('expandSubtopic', props.group);
 }
@@ -210,6 +236,41 @@ const radiusScale = computed(() => {
     .domain([0, props.maxTagsCount])
     .range([3, props.interTopicPosition - 4]);
 });
+
+// interactivity
+function onMouseOver(d) {
+  emits('update:mouseOverElement', {
+    name: d.groupTagLabel ? d.groupTagLabel : d.tag,
+    level: d.depth,
+    level1: d.level1,
+    level2: d.level2,
+    source: 'radial',
+  });
+}
+function onMouseLeave(d) {
+  emits('update:mouseOverElement', null);
+}
+
+function getClassesForHovered() {
+  if (!props.mouseOverElement) return '';
+  if (props.mouseOverElement.level === 1) {
+    if (props.mouseOverElement.level1 === props.group.level1) return 'hovered';
+  }
+  if (props.mouseOverElement.level === 2) {
+    if (
+      props.mouseOverElement.level2 === props.group.level2 &&
+      props.mouseOverElement.level1 === props.group.level1
+    )
+      return 'hovered';
+  }
+  return 'hoveredOut';
+}
+function getClassesForHoveredTag(d) {
+  if (!props.mouseOverElement) return '';
+  if (props.mouseOverElement.level === 3) {
+    if (props.mouseOverElement.name === d.tag) return 'hovered';
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -230,7 +291,7 @@ path.link.active,
   }
   text {
     font-size: 12px;
-    font-weight: bold;
+    font-weight: 300;
     line-height: 12px;
   }
 }
@@ -248,5 +309,26 @@ path.link.active,
       fill: #d5d5d5;
     }
   }
+}
+
+g.hoveredOut {
+  text,
+  circle,
+  line,
+  rect,
+  path {
+    opacity: 0.2;
+  }
+  g.hovered {
+    text,
+    circle,
+    line,
+    rect,
+    path {
+      opacity: 1;
+    }
+  }
+}
+g.hovered {
 }
 </style>
