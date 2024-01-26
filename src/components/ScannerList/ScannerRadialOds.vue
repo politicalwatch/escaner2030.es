@@ -42,10 +42,10 @@
       >
         <div v-if="selectedSubtopic">
           <div>{{ selectedSubtopic.parent.tag }}</div>
-          <div>Meta: {{ selectedSubtopic.subtopic }}</div>
+          <div>{{ selectedSubtopic.data.name }}</div>
           <div>
-            {{ selectedSubtopic.times }}
-            {{ selectedSubtopic.times == 1 ? 'aparicion' : 'apariciones' }} de
+            {{ selectedSubtopic.value }}
+            {{ selectedSubtopic.value == 1 ? 'aparicion' : 'apariciones' }} de
             tags relacionados
           </div>
         </div>
@@ -180,7 +180,6 @@ const dataHierarchy = computed(() => {
 
   const newroot = d3.hierarchy(odsRoot).sum((d) => d.value);
 
-  console.log(newroot);
   // we are creating a sunburst chart and we want to add the init and end radius to each element in the hierarchy
   const partition = d3.partition().size([2 * Math.PI, radius.level3]);
   partition(newroot);
@@ -235,7 +234,6 @@ const selectedSubtopic = ref(null);
 const tooltipPosition = ref({ x: 0, y: 0 });
 
 function onMouseOver(event, d) {
-  console.log(d);
   selectedSubtopic.value = d;
   tooltipPosition.value = { x: event.pageX, y: event.pageY };
   emits('update:mouseOverElement', {
