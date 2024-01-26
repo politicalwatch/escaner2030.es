@@ -40,7 +40,7 @@
 <script>
 import ScannerListViz from './ScannerListViz.vue';
 import ScannerRadialOds from './ScannerRadialOds.vue';
-import ScannerListOds from './scannerListOds.vue';
+import ScannerListOds from './ScannerListOds.vue';
 export default {
   components: {
     ScannerListViz,
