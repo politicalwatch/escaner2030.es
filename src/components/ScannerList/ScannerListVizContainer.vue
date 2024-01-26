@@ -1,14 +1,24 @@
 <template>
+  <div class="o-grid__col u-12 u-margin-bottom-4">
+    <ScannerListOds
+      :result="result"
+      :styles="styles"
+      :mouseOverElement="hoveredObject"
+      :clicked-array="clickedArray"
+      @update:mouseOverElement="hoveredObject = $event"
+      @update:clickedElement="manageClickedArray($event)"
+    ></ScannerListOds>
+  </div>
   <div class="o-grid__col u-4 u-relative" ref="scannerRadialOdsOnctainer">
     <div class="container-sunburst">
       <ScannerRadialOds
         :result="result"
         :styles="styles"
-        @update:mouseOverElement="hoveredObject = $event"
-        @update:clickedElement="manageClickedArray($event)"
         :mouseOverElement="hoveredObject"
         :availableWidth="scannerRadialOdsWidth"
         :clicked-array="clickedArray"
+        @update:mouseOverElement="hoveredObject = $event"
+        @update:clickedElement="manageClickedArray($event)"
       ></ScannerRadialOds>
     </div>
   </div>
@@ -30,10 +40,12 @@
 <script>
 import ScannerListViz from './ScannerListViz.vue';
 import ScannerRadialOds from './ScannerRadialOds.vue';
+import ScannerListOds from './scannerListOds.vue';
 export default {
   components: {
     ScannerListViz,
     ScannerRadialOds,
+    ScannerListOds,
   },
   props: {
     result: {
@@ -92,7 +104,7 @@ export default {
 <style lang="scss" scoped>
 .container-sunburst {
   position: sticky;
-  top: 0;
+  top: 24px;
   left: 0;
 }
 </style>

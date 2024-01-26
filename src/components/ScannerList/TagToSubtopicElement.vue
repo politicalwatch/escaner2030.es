@@ -117,7 +117,6 @@ function getPathForIndex(index) {
 
 // interactivity
 function onMouseOver(d) {
-  console.log(d);
   emits('update:mouseOverElement', {
     name: d.groupTagLabel ? d.groupTagLabel : d.tag,
     level: d.depth,
