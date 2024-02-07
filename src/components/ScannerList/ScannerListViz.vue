@@ -139,8 +139,7 @@ const props = defineProps({
 
 const emits = defineEmits(['update:mouseOverElement', 'update:clickedElement']);
 const POSITIONS = {
-  interTopic: 24,
-  fontSize: 12,
+  interTopic: 28,
 };
 
 // Main function:
@@ -194,8 +193,10 @@ watchEffect(() => {
     );
     if (clickedArrayLevel1.length > 0) {
       grouped = grouped.filter((element) =>
-        clickedArrayLevel1.find(
-          (clickedElement) => clickedElement.level1 === element.level1
+        clickedArrayLevel1.find((clickedElement) =>
+          element.children.some(
+            (child) => child.level1 === clickedElement.level1
+          )
         )
       );
     }

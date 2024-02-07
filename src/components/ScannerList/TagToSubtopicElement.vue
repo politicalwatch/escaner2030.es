@@ -23,13 +23,18 @@
         {{ group.times }}
       </text>
     </g>
+
     <text
       :x="interTopicPosition * 3"
       :y="interTopicPosition - 6"
       @mouseover="onMouseOver(group)"
       @mouseleave="onMouseLeave(group)"
     >
-      {{ group.groupTagLabel }}
+      {{
+        hovered
+          ? group.groupTagLabel
+          : group.groupTagLabel.substring(0, maxCharactersText)
+      }}
     </text>
     <g
       v-for="(subtopic, index2) in group.children"
@@ -60,6 +65,7 @@
 
 <script setup>
 import { linkHorizontal } from 'd3';
+import { computed, ref } from 'vue';
 const props = defineProps({
   group: {
     type: Object,
@@ -115,8 +121,15 @@ function getPathForIndex(index) {
   return link({ source: startingPoint, target: endingPoint });
 }
 
+const maxCharactersText = computed(() => {
+  const space = props.availableWidth * 0.6 - props.interTopicPosition * 3;
+  return space / 7; // TBD - 7 is an arbitrary number
+});
 // interactivity
+const hovered = ref(false);
+
 function onMouseOver(d) {
+  hovered.value = true;
   emits('update:mouseOverElement', {
     name: d.groupTagLabel ? d.groupTagLabel : d.tag,
     level: d.depth,
@@ -126,6 +139,7 @@ function onMouseOver(d) {
   });
 }
 function onMouseLeave(d) {
+  hovered.value = false;
   emits('update:mouseOverElement', null);
 }
 function getClassesForHovered() {
@@ -138,6 +152,10 @@ function getClassesForHovered() {
       props.mouseOverElement.level2 === props.group.level2 &&
       props.mouseOverElement.level1 === props.group.level1
     )
+      return 'hovered';
+  }
+  if (props.mouseOverElement.level === 3) {
+    if (props.mouseOverElement.name === props.group.groupTagLabel)
       return 'hovered';
   }
   return 'hoveredOut';

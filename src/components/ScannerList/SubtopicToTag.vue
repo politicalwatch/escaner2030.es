@@ -4,13 +4,13 @@
     :class="getClassesForHovered(group)"
   >
     <g
-      class="help-circle"
+      class="expand-circle"
       :class="{
         expanded: group.expanded,
       }"
     >
       <circle
-        r="12"
+        :r="CIRCLE_RADIUS"
         cx="12"
         cy="-4"
         class="bg-circle"
@@ -19,11 +19,12 @@
         @mouseleave="hovered = false"
       ></circle>
       <circle
-        r="4"
-        cx="12"
-        cy="-4"
+        :r="CIRCLE_RADIUS / 3"
+        :cx="CIRCLE_RADIUS"
+        :cy="-CIRCLE_RADIUS / 3"
         :fill="getColorForTopic(group.topic)"
         v-show="!hovered && !group.expanded"
+        style="pointer-events: none"
       ></circle>
       <path
         transform="translate(12,-4)"
@@ -31,34 +32,33 @@
         stroke="black"
         stroke-width="2"
         fill="none"
+        style="pointer-events: none"
         v-show="hovered && !group.expanded"
       />
+      <line
+        x1="6"
+        y1="-4"
+        x2="18"
+        y2="-4"
+        stroke="black"
+        stroke-width="3"
+        fill="none"
+        v-show="group.expanded"
+      />
     </g>
-    <line
-      x1="6"
-      y1="-4"
-      x2="18"
-      y2="-4"
-      stroke="black"
-      stroke-width="3"
-      fill="none"
-      v-show="group.expanded"
-    />
-    <text x="40" text-anchor="start" font-size="14px" font-weight="500">{{
+
+    <text :x="positions.id" class="text-label" font-weight="500">{{
       IdAndName.id
     }}</text>
     <text
-      x="88"
-      text-anchor="start"
-      font-size="14px"
-      font-weight="300"
+      :x="positions.label"
+      class="text-label"
       @mouseover="onMouseOver(group)"
       @mouseleave="onMouseLeave(group)"
     >
       {{ IdAndName.name }}
     </text>
-
-    <g :transform="`translate(${availableWidth - miniBar.width},0)`">
+    <g :transform="`translate(${availableWidth - miniBar.width},-8)`">
       <rect
         :width="miniBar.width"
         :height="miniBar.height"
@@ -73,8 +73,12 @@
         fill="#000"
       >
       </rect>
+      <text :x="-8" y="4" font-size="12px" text-anchor="end" v-if="hovered">
+        {{ group.times }}
+      </text>
     </g>
-    <!-- expansion-->
+
+    <!-- expansion on click -->
     <g
       v-for="(tag, index2) in group.children"
       :transform="`translate(0, ${tag.y})`"
@@ -82,7 +86,8 @@
       :class="getClassesForHoveredTag(tag)"
     >
       <text
-        x="80"
+        class="text-label"
+        :x="positions.label"
         y="-4"
         @mouseover="onMouseOver(tag)"
         @mouseleave="onMouseLeave(tag)"
@@ -91,8 +96,8 @@
       </text>
       <path :d="getPathForIndex(tag, index2)" class="link"></path>
       <line
-        x1="80"
-        y1=""
+        :x1="positions.label"
+        y1="0"
         :x2="availableWidth"
         y2="0"
         stroke="#eee"
@@ -116,12 +121,12 @@
         ></circle>
         <text
           :x="0"
-          :y="0"
+          :y="0.5"
           fill="white"
           text-anchor="middle"
           dominant-baseline="middle"
         >
-          {{ group.times }}
+          {{ tag.times }}
         </text>
       </g>
     </g>
@@ -184,6 +189,11 @@ const miniBar = {
   height: 4,
   margin: 10,
 };
+const CIRCLE_RADIUS = 12;
+const positions = {
+  id: CIRCLE_RADIUS * 2 + 8,
+  label: CIRCLE_RADIUS * 2 + 50,
+};
 const miniBarScale = computed(() => {
   return scaleLinear()
     .domain([0, props.maxSubtopicsCount])
@@ -221,12 +231,12 @@ const link = linkHorizontal()
 
 function getPathForIndex(tag, index) {
   const endingPoint = {
-    x: 80,
+    x: positions.label,
     y: 0,
   };
   const startingPoint = {
-    x: 12,
-    y: -tag.y,
+    x: CIRCLE_RADIUS * 2 - 4,
+    y: -tag.y + 4,
   };
   return link({ source: startingPoint, target: endingPoint });
 }
@@ -234,11 +244,12 @@ function getPathForIndex(tag, index) {
 const radiusScale = computed(() => {
   return scaleSqrt()
     .domain([0, props.maxTagsCount])
-    .range([3, props.interTopicPosition - 4]);
+    .range([6, props.interTopicPosition - 4]);
 });
 
 // interactivity
 function onMouseOver(d) {
+  hovered.value = true;
   emits('update:mouseOverElement', {
     name: d.groupTagLabel ? d.groupTagLabel : d.tag,
     level: d.depth,
@@ -248,6 +259,7 @@ function onMouseOver(d) {
   });
 }
 function onMouseLeave(d) {
+  hovered.value = false;
   emits('update:mouseOverElement', null);
 }
 
@@ -274,14 +286,20 @@ function getClassesForHoveredTag(d) {
 </script>
 
 <style lang="scss" scoped>
+.textlabel {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 12px;
+  text-anchor: start;
+}
 path.link {
-  stroke: #d5d5d5;
+  stroke: #eee;
   fill: none;
 }
 path.link.active,
 .tagCount {
   circle.normal {
-    fill: #d5d5d5;
+    fill: #000;
   }
   circle.outline {
     fill: none;
@@ -296,7 +314,7 @@ path.link.active,
   }
 }
 
-.help-circle {
+.expand-circle {
   & {
     pointer-events: none;
   }
@@ -304,7 +322,7 @@ path.link.active,
     pointer-events: all !important;
     transition: 0.2s;
     cursor: pointer;
-    fill: #eee;
+    fill: #f9f9f9;
     &:hover {
       fill: #d5d5d5;
     }

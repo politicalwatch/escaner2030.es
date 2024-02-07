@@ -9,8 +9,11 @@
       @update:clickedElement="manageClickedArray($event)"
     ></ScannerListOds>
   </div>
-  <div class="o-grid__col u-4 u-relative" ref="scannerRadialOdsOnctainer">
-    <div class="container-sunburst">
+  <div
+    class="o-grid__col u-4 u-relative u-margin-top-8"
+    ref="scannerRadialOdsOnctainer"
+  >
+    <div class="container-sunburst u-margin-bottom-10">
       <ScannerRadialOds
         :result="result"
         :styles="styles"

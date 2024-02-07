@@ -41,12 +41,33 @@
         }"
       >
         <div v-if="selectedSubtopic">
-          <div>{{ selectedSubtopic.parent.tag }}</div>
-          <div>{{ selectedSubtopic.data.name }}</div>
-          <div>
-            {{ selectedSubtopic.value }}
-            {{ selectedSubtopic.value == 1 ? 'aparicion' : 'apariciones' }} de
-            tags relacionados
+          <div class="tooltip-content">
+            <div class="codes-indicators">
+              <div
+                class="ods-number"
+                :style="{
+                  'background-color': selectedSubtopic.data.color,
+                }"
+              >
+                {{ selectedSubtopic.data.level1 }}
+              </div>
+              <div
+                v-if="selectedSubtopic.depth > 1"
+                class="meta-number"
+                :style="{
+                  'background-color': selectedSubtopic.data.color,
+                }"
+              >
+                {{ selectedSubtopic.data.level2 }}
+              </div>
+            </div>
+            <div class="codes-labels">
+              <div>{{ selectedSubtopic.parent.tag }}</div>
+              <div>{{ selectedSubtopic.data.name }}</div>
+            </div>
+            <div class="tag-count">
+              {{ selectedSubtopic.value }}
+            </div>
           </div>
         </div>
       </div>
@@ -234,6 +255,7 @@ const selectedSubtopic = ref(null);
 const tooltipPosition = ref({ x: 0, y: 0 });
 
 function onMouseOver(event, d) {
+  console.log(d);
   selectedSubtopic.value = d;
   tooltipPosition.value = { x: event.pageX, y: event.pageY };
   emits('update:mouseOverElement', {
@@ -344,7 +366,63 @@ path.active {
   transition: all 0.3s ease;
   background-color: #222;
   color: white;
-  padding: 8px;
+  padding: 16px;
+  .tooltip-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 16px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+  }
+
+  .codes-indicators {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+  }
+  .codes-labels {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    font-weight: 600;
+    max-width: 400px;
+  }
+
+  .ods-number {
+    display: flex;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center; /* align horizontal */
+    align-items: center; /* align vertical */
+    line-height: 32px;
+  }
+  .meta-number {
+    display: flex;
+    width: 32px;
+    height: 32px;
+    justify-content: center; /* align horizontal */
+    align-items: center; /* align vertical */
+    border-radius: 100%;
+    line-height: 32px;
+  }
+  .tag-count {
+    width: 48px;
+    height: 48px;
+    border-radius: 100%;
+    border-color: white;
+    border-style: dashed;
+    padding: 8px;
+    text-align: center;
+    font-weight: bold;
+    line-height: 30px;
+  }
 }
 
 .hoveredOut,
