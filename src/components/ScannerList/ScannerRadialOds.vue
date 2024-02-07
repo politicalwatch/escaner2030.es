@@ -1,7 +1,7 @@
 <template>
   <div class="relative">
-    <svg class="radialView" :width="availableWidth" :height="canvasHeight">
-      <g :transform="`translate(${availableWidth / 2}, ${availableWidth / 2})`">
+    <svg class="radialView" :width="width" :height="canvasHeight">
+      <g :transform="`translate(${width / 2}, ${canvasHeight / 2})`">
         <path
           v-for="d in dataHierarchy.descendants().filter((d) => d.depth > 0)"
           :key="d.name"
@@ -107,8 +107,11 @@ const margin = 40;
 
 const emits = defineEmits(['update:mouseOverElement', 'update:clickedElement']);
 
+const width = computed(() => {
+  return Math.min(props.availableWidth, 500);
+});
 const canvasHeight = computed(() => {
-  return props.availableWidth;
+  return width.value;
 });
 
 function getBaseOdsList() {
@@ -209,13 +212,20 @@ const dataHierarchy = computed(() => {
 });
 
 // build chart:
-const radius = {
-  inner: 45,
-  level1: 105,
-  level2: 135,
-  level3: 180,
-};
-const radiusArray = [radius.inner, radius.level1, radius.level2, radius.level3];
+const radius = computed(() => {
+  return {
+    inner: ((45 / 180) * width.value) / 2,
+    level1: ((105 / 180) * width.value) / 2,
+    level2: ((135 / 180) * width.value) / 2,
+    level3: ((180 / 180) * width.value) / 2,
+  };
+});
+const radiusArray = computed(() => [
+  radius.value.inner,
+  radius.value.level1,
+  radius.value.level2,
+  radius.value.level3,
+]);
 
 const arc = d3
   .arc()
@@ -226,10 +236,10 @@ const arc = d3
     return d.x1;
   })
   .innerRadius(function (d) {
-    return radiusArray[d.depth - 1];
+    return radiusArray.value[d.depth - 1];
   })
   .outerRadius(function (d) {
-    return radiusArray[d.depth];
+    return radiusArray.value[d.depth];
   });
 
 function showText(d) {
@@ -358,7 +368,7 @@ path.hovered {
 
 path.active {
   filter: brightness(1.2);
-  stroke: #111;
+  stroke: rgba(0, 0, 0, 0.1);
   stroke-width: 2px;
 }
 
@@ -380,7 +390,7 @@ path.active {
   .codes-indicators {
     display: flex;
     flex-direction: row;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: center;
     gap: 8px;
     font-weight: 600;

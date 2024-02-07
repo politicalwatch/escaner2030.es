@@ -2,10 +2,8 @@
   <div>
     <div>
       <h5>{{ $t('components.scannerVisualizations.title') }}:</h5>
-      <div class="o-grid">
-        <scanner-list-viz-container :styles="styles" :result="result">
-        </scanner-list-viz-container>
-      </div>
+      <scanner-list-viz-container :styles="styles" :result="result">
+      </scanner-list-viz-container>
       <div class="o-grid">
         <div class="o-grid__col u-12 u-6@sm">
           <ScannerLegend

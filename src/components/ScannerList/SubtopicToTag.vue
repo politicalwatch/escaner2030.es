@@ -47,18 +47,25 @@
       />
     </g>
 
-    <text :x="positions.id" class="text-label" font-weight="500">{{
+    <text :x="positions.id" class="text-normal" font-weight="500">{{
       IdAndName.id
     }}</text>
     <text
       :x="positions.label"
-      class="text-label"
+      class="text-normal"
       @mouseover="onMouseOver(group)"
       @mouseleave="onMouseLeave(group)"
     >
       {{ IdAndName.name }}
     </text>
     <g :transform="`translate(${availableWidth - miniBar.width},-8)`">
+      <rect
+        fill="#fff"
+        x="-4"
+        y="-4"
+        :width="miniBar.width + 4"
+        :height="interTopicPosition + 4"
+      ></rect>
       <rect
         :width="miniBar.width"
         :height="miniBar.height"
@@ -108,17 +115,20 @@
         :transform="`translate(${availableWidth - interTopicPosition},${0})`"
       >
         <circle
+          class="outline"
+          :r="interTopicPosition"
+          :cx="0"
+          :cy="0"
+          @mouseover="onMouseOver(tag)"
+          @mouseleave="onMouseLeave(tag)"
+        ></circle>
+        <circle
           class="normal"
           :r="radiusScale(tag.times)"
           :cx="0"
           :cy="0"
         ></circle>
-        <circle
-          class="outline"
-          :r="interTopicPosition"
-          :cx="0"
-          :cy="0"
-        ></circle>
+
         <text
           :x="0"
           :y="0.5"
@@ -286,12 +296,18 @@ function getClassesForHoveredTag(d) {
 </script>
 
 <style lang="scss" scoped>
-.textlabel {
-  font-size: 14px;
+.text-normal {
+  font-size: 16px;
   font-weight: 300;
   line-height: 12px;
   text-anchor: start;
 }
+.text-label {
+  font-size: 14px;
+  font-weight: 300;
+  text-anchor: start;
+}
+
 path.link {
   stroke: #eee;
   fill: none;
@@ -299,18 +315,20 @@ path.link {
 path.link.active,
 .tagCount {
   circle.normal {
-    fill: #000;
+    fill: #c5c5c5;
+    pointer-events: none;
   }
   circle.outline {
-    fill: none;
-    stroke: #d5d5d5;
+    fill: white;
+    stroke: #c5c5c5;
     stroke-width: 1px;
-    stroke-dasharray: 4 4;
+    stroke-dasharray: 2 2;
   }
   text {
     font-size: 12px;
-    font-weight: 300;
+    font-weight: 500;
     line-height: 12px;
+    pointer-events: none;
   }
 }
 
@@ -344,6 +362,12 @@ g.hoveredOut {
     rect,
     path {
       opacity: 1;
+    }
+    circle.normal {
+      fill: #000;
+    }
+    circle.outline {
+      stroke: #000;
     }
   }
 }

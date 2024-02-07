@@ -1,42 +1,44 @@
 <template>
-  <div class="o-grid__col u-12 u-margin-bottom-4">
-    <ScannerListOds
-      :result="result"
-      :styles="styles"
-      :mouseOverElement="hoveredObject"
-      :clicked-array="clickedArray"
-      @update:mouseOverElement="hoveredObject = $event"
-      @update:clickedElement="manageClickedArray($event)"
-    ></ScannerListOds>
-  </div>
-  <div
-    class="o-grid__col u-4 u-relative u-margin-top-8"
-    ref="scannerRadialOdsOnctainer"
-  >
-    <div class="container-sunburst u-margin-bottom-10">
-      <ScannerRadialOds
+  <div class="o-grid u-margin-bottom-4">
+    <div class="o-grid__col u-12 u-margin-bottom-4">
+      <ScannerListOds
         :result="result"
         :styles="styles"
         :mouseOverElement="hoveredObject"
-        :availableWidth="scannerRadialOdsWidth"
         :clicked-array="clickedArray"
         @update:mouseOverElement="hoveredObject = $event"
         @update:clickedElement="manageClickedArray($event)"
-      ></ScannerRadialOds>
+      ></ScannerListOds>
     </div>
-  </div>
-  <div class="o-grid__col u-1">&nbsp;</div>
-  <div class="o-grid__col u-7" ref="scannerListContainer">
-    <ScannerListViz
-      :result="result"
-      :styles="styles"
-      @update:mouseOverElement="hoveredObject = $event"
-      @update:clickedElement="manageClickedArray($event)"
-      :mouseOverElement="hoveredObject"
-      :availableWidth="scannerListWidth"
-      :clicked-array="clickedArray"
-    >
-    </ScannerListViz>
+    <div class="o-grid__col u-5@sm u-4@lg u-12 u-relative u-margin-top-8">
+      <div
+        class="container-sunburst u-margin-bottom-10"
+        ref="scannerRadialOdsContainer"
+      >
+        <ScannerRadialOds
+          :result="result"
+          :styles="styles"
+          :mouseOverElement="hoveredObject"
+          :availableWidth="scannerRadialOdsWidth"
+          :clicked-array="clickedArray"
+          @update:mouseOverElement="hoveredObject = $event"
+          @update:clickedElement="manageClickedArray($event)"
+        ></ScannerRadialOds>
+      </div>
+    </div>
+    <div class="o-grid__col u-1 u-hide u-block@lg">&nbsp;</div>
+    <div class="o-grid__col u-7@sm u-12" ref="scannerListContainer">
+      <ScannerListViz
+        :result="result"
+        :styles="styles"
+        @update:mouseOverElement="hoveredObject = $event"
+        @update:clickedElement="manageClickedArray($event)"
+        :mouseOverElement="hoveredObject"
+        :availableWidth="scannerListWidth"
+        :clicked-array="clickedArray"
+      >
+      </ScannerListViz>
+    </div>
   </div>
 </template>
 
@@ -79,10 +81,11 @@ export default {
   },
   mounted: function () {
     this.hoveredObject = null;
-    this.scannerListWidth = this.$refs.scannerListContainer.offsetWidth - 32;
-    console.log(this.scannerListWidth);
-    this.scannerRadialOdsWidth =
-      this.$refs.scannerRadialOdsOnctainer.offsetWidth;
+    this.handleResize();
+    window.addEventListener('resize', this.handleResize);
+  },
+  unmounted: function () {
+    window.removeEventListener('resize', this.handleResize);
   },
   methods: {
     manageClickedArray(clickedObject) {
@@ -100,6 +103,16 @@ export default {
         this.clickedArray.push(clickedObject);
       }
     },
+
+    handleResize() {
+      console.log('resize');
+      this.scannerListWidth = this.$refs.scannerListContainer.offsetWidth - 32;
+      this.scannerRadialOdsWidth =
+        this.$refs.scannerRadialOdsContainer.offsetWidth;
+    },
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.handleResize);
   },
 };
 </script>

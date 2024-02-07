@@ -2,17 +2,20 @@
   <g :class="getClassesForHovered(group)">
     <g class="tagCount">
       <circle
+        class="outline"
+        :r="interTopicPosition"
+        :cx="interTopicPosition"
+        :cy="interTopicPosition"
+        @mouseover="onMouseOver(group)"
+        @mouseleave="onMouseLeave(group)"
+      ></circle>
+      <circle
         class="normal"
         :r="radius"
         :cx="interTopicPosition"
         :cy="interTopicPosition"
       ></circle>
-      <circle
-        class="outline"
-        :r="interTopicPosition"
-        :cx="interTopicPosition"
-        :cy="interTopicPosition"
-      ></circle>
+
       <text
         :x="interTopicPosition"
         :y="interTopicPosition + 1"
@@ -29,6 +32,7 @@
       :y="interTopicPosition - 6"
       @mouseover="onMouseOver(group)"
       @mouseleave="onMouseLeave(group)"
+      class="text-label"
     >
       {{
         hovered
@@ -50,6 +54,7 @@
         :fill="getColorForTopic(subtopic.topic)"
       ></circle>
       <text
+        class="text-subtopic"
         dominant-baseline="middle"
         :x="subtopic.x + interTopicPosition"
         :y="subtopic.y"
@@ -123,7 +128,7 @@ function getPathForIndex(index) {
 
 const maxCharactersText = computed(() => {
   const space = props.availableWidth * 0.6 - props.interTopicPosition * 3;
-  return space / 7; // TBD - 7 is an arbitrary number
+  return space / 7.2; // TBD - 7 is an arbitrary number
 });
 // interactivity
 const hovered = ref(false);
@@ -171,18 +176,20 @@ function getClassesForHoveredSubtopic(d) {
 <style lang="scss" scoped>
 .tagCount {
   circle.normal {
-    fill: #d5d5d5;
+    fill: #c5c5c5;
+    pointer-events: none;
   }
   circle.outline {
-    fill: none;
-    stroke: #d5d5d5;
+    fill: white;
+    stroke: #c5c5c5;
     stroke-width: 1px;
-    stroke-dasharray: 4 4;
+    stroke-dasharray: 2 2;
   }
   text {
     font-size: 12px;
-    font-weight: bold;
+    font-weight: 500;
     line-height: 12px;
+    pointer-events: none;
   }
 }
 
@@ -208,7 +215,12 @@ g.active {
 }
 
 // charts
-text {
+.text-label {
+  font-size: 16px;
+  font-weight: 300;
+  cursor: default;
+}
+.text-subtopic {
   font-size: 14px;
   font-weight: 300;
   cursor: default;
@@ -226,7 +238,7 @@ g.hoveredOut {
   path {
     opacity: 0.2;
   }
-  g.hovered {
+  .hovered {
     text,
     circle,
     line,
@@ -236,6 +248,12 @@ g.hoveredOut {
     }
   }
 }
-g.hovered {
+.hovered {
+  circle.normal {
+    fill: #000 !important;
+  }
+  circle.outline {
+    stroke: #000;
+  }
 }
 </style>

@@ -100,6 +100,7 @@ $width: 36px;
   display: flex;
   column-gap: 8px;
   justify-content: flex-start;
+  flex-wrap: wrap;
 
   &__img {
     margin: 0px 5px 5px 0px;
