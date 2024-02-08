@@ -267,7 +267,7 @@ const tooltipPosition = ref({ x: 0, y: 0 });
 function onMouseOver(event, d) {
   console.log(d);
   selectedSubtopic.value = d;
-  tooltipPosition.value = { x: event.pageX, y: event.pageY };
+  tooltipPosition.value = getRealPosition(event.pageX, event.pageY); // { x: event.pageX, y: event.pageY };
   emits('update:mouseOverElement', {
     name: d.data.name,
     level: d.depth,
@@ -276,6 +276,16 @@ function onMouseOver(event, d) {
     source: 'radial',
   });
 }
+// this function considers the screen width and height and adjusts the tooltip position to avoid it to be cut by the screen
+function getRealPosition(x, y) {
+  const tooltipWidth = 400;
+  const tooltipHeight = 100;
+  const windowWidth = window.innerWidth;
+  const windowHeight = window.innerHeight;
+  if (x + tooltipWidth > windowWidth) x = windowWidth - tooltipWidth;
+  if (y + tooltipHeight > windowHeight) y = windowHeight - tooltipHeight;
+  return { x, y };
+}
 function onMouseOut(event, d) {
   selectedSubtopic.value = null;
   emits('update:mouseOverElement', null);
@@ -283,7 +293,9 @@ function onMouseOut(event, d) {
 function onClick(event, d) {
   if (d.depth != 1) return;
   selectedSubtopic.value = d;
-  tooltipPosition.value = { x: event.pageX, y: event.pageY };
+  //  tooltipPosition.value = { x: event.pageX, y: event.pageY };
+  tooltipPosition.value = getRealPosition(event.pageX, event.pageY); // { x: event.pageX, y: event.pageY };
+
   emits('update:clickedElement', {
     name: d.data.name,
     level: d.depth,
@@ -377,6 +389,8 @@ path.active {
   background-color: #222;
   color: white;
   padding: 16px;
+  min-height: 40px;
+  min-width: 300px;
   .tooltip-content {
     display: flex;
     flex-direction: row;

@@ -9,6 +9,7 @@
             : '#eee',
           'background-image': `url(/img/topics/${styles.topics[d].image})`,
           'pointer-events': isTopicActive(d) ? 'auto' : 'none',
+          cursor: isTopicActive(d) ? 'pointer' : 'default',
         }"
         :class="getClassesForHovered(d, i + 1)"
         @mouseover="onMouseOver(d)"
