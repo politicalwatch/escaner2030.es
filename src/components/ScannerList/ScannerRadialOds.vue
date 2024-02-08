@@ -16,7 +16,9 @@
         <text
           v-for="d in dataHierarchy
             .descendants()
-            .filter((d) => d.depth < 3 && showText(d))"
+            .filter(
+              (d) => d.depth < 3 && showText(d) && !isNaN(arc.centroid(d)[0])
+            )"
           :key="d.name"
           :transform="`translate(${arc.centroid(d)})`"
           :dy="0"
@@ -265,7 +267,6 @@ const selectedSubtopic = ref(null);
 const tooltipPosition = ref({ x: 0, y: 0 });
 
 function onMouseOver(event, d) {
-  console.log(d);
   selectedSubtopic.value = d;
   tooltipPosition.value = getRealPosition(event.pageX, event.pageY); // { x: event.pageX, y: event.pageY };
   emits('update:mouseOverElement', {
@@ -362,6 +363,9 @@ function getClassesForHovered(d) {
 .radialView {
   path.depth-1 {
     cursor: pointer;
+  }
+  path {
+    transition: all 0.3s ease;
   }
 }
 .simple-tooltip {

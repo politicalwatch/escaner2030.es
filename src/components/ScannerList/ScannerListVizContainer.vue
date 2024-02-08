@@ -105,7 +105,6 @@ export default {
     },
 
     handleResize() {
-      console.log('resize');
       this.scannerListWidth = this.$refs.scannerListContainer.offsetWidth - 32;
       this.scannerRadialOdsWidth =
         this.$refs.scannerRadialOdsContainer.offsetWidth;

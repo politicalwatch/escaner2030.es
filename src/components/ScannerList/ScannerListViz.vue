@@ -19,7 +19,7 @@
       </div>
       <div>
         <span v-if="selectedTab === 'metas'" class="legend-text">
-          Importancia según etiquetas
+          Apariciones de etiquetas
         </span>
       </div>
     </div>
@@ -332,7 +332,6 @@ function updatePositionsSubtopicsWithTags(listOfTags) {
 }
 
 function expandSubTopic(group) {
-  console.log(group.expanded);
   group.expanded = !group.expanded;
   updatePositionsSubtopicsWithTags(allSubtopicsWithTags.value);
 }
