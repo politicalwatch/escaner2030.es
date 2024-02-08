@@ -58,7 +58,25 @@
       style="background-image: url('/img/multicolor.jpg')"
     ></div>
 
-  
+    <vue-cookie-accept-decline
+      :debug="false"
+      :disableDecline="false"
+      :showPostponeButton="false"
+      @clicked-accept="cookieClickedAccept"
+      @clicked-decline="cookieClickedDecline"
+      @status="cookieStatus"
+      elementId="cookiePanel"
+      ref="cookiePanel"
+      transitionName="slideFromBottom"
+      type="floating"
+    >
+      <template #message>
+        {{ $t('common.cookies.info') }}
+      </template>
+
+      <template #declineContent>{{ $t('common.cookies.decline') }}</template>
+      <template #acceptContent>{{ $t('common.cookies.accept') }}</template>
+    </vue-cookie-accept-decline>
   </div>
 </template>
 

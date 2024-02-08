@@ -164,9 +164,6 @@ export default {
       isLoadingDocuments: false,
       documents: [],
       compareOptions: [],
-      globalSelectedSubtopic: null,
-      scannerListWidth: null,
-      scannerRadialOdsWidth: null,
     };
   },
   methods: {
