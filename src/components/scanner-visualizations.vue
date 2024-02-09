@@ -1,79 +1,24 @@
 <template>
-  <div>
-    <div>
+  <div class="o-grid">
+    <div class="o-grid__col u-12">
       <h5>{{ $t('components.scannerVisualizations.title') }}:</h5>
-      <scanner-list-viz-container :styles="styles" :result="result">
-      </scanner-list-viz-container>
-      <div class="o-grid">
-        <div class="o-grid__col u-12 u-6@sm">
-          <ScannerLegend
-            :result="result"
-            :isFirst="true"
-            :styles="styles"
-          ></ScannerLegend>
-        </div>
-        <div class="o-grid__col u-12 u-6@sm">
-          <ScannerLegend
-            :result="result"
-            :isFirst="false"
-            :styles="styles"
-          ></ScannerLegend>
-        </div>
-        <div class="o-grid__col u-12 u-6@sm u-padding-top-4">
-          <ScannerSunburst :result="result" :styles="styles"></ScannerSunburst>
-          <tipi-message type="info" icon>{{
-            $t('components.scannerVisualizations.zoom')
-          }}</tipi-message>
-        </div>
-        <div class="o-grid__col u-12 u-6@sm u-padding-top-4 u-text-center">
-          <ScannerWordsCloud
-            :result="result"
-            :maxResults="tagsInWordCloud"
-            :styles="styles"
-          ></ScannerWordsCloud>
-          <tipi-message type="info" icon>
-            {{
-              $t('components.scannerVisualizations.maxShown', {
-                num: tagsInWordCloud,
-              })
-            }}</tipi-message
-          >
-        </div>
-      </div>
+      <scanner-list-viz-container :styles="styles" :result="result" />
     </div>
-    <div v-if="$i18n.locale === 'es'" class="u-padding-top-10">
-      <h5>{{ $t('components.scannerVisualizations.compare.title') }}</h5>
-      <tipi-message type="info" icon>{{
-        $t('components.scannerVisualizations.compare.info')
-      }}</tipi-message>
-      <div class="c-select-label u-block">
-        <label for="topic">{{
-          $t('components.scannerVisualizations.compare.label')
-        }}</label>
-        <multiselect
-          v-model="textToCompare"
-          :loading="isLoadingDocuments"
-          :options="compareOptions"
-          @search-change="searchDocuments"
-          name="pre-scanned-text"
-          id="pre-scanned-text"
-          :placeholder="
-            $t('components.scannerVisualizations.compare.placeholder')
-          "
-        >
-          <template v-slot:noOptions>{{
-            $t('components.scannerVisualizations.compare.empty')
-          }}</template>
-        </multiselect>
-      </div>
+    <div class="o-grid__col u-12 u-margin-bottom-10">
       <ScannerBarchart
         :result="this.result"
         :resultToCompare="resultToCompare"
         :styles="styles"
-      ></ScannerBarchart>
+      />
     </div>
-
-    <div class="u-padding-top-10">
+    <div v-if="result.tags.length > 15" class="o-grid__col u-12 u-text-center">
+      <ScannerWordsCloud
+        :result="result"
+        :maxResults="tagsInWordCloud"
+        :styles="styles"
+      />
+    </div>
+    <div class="o-grid__col u-12">
       <h5>{{ $t('components.scannerVisualizations.detailed.title') }}</h5>
       <p v-if="result.topics.length > 9">
         {{
@@ -85,9 +30,8 @@
       <p v-else>
         {{ $t('components.scannerVisualizations.detailed.info') }}
       </p>
-      <ScannerTable :result="result"></ScannerTable>
+      <ScannerTable :result="result" />
     </div>
-
     <div class="o-grid__col u-12 u-margin-top-4">
       <json-excel
         :data="csvItems"
@@ -96,8 +40,8 @@
         class="c-button c-button--icon-right c-button--primary"
       >
         {{ $t('components.scannerVisualizations.detailed.button') }}
-        <span class="c-icon c-icon--type-download"
-          ><svg
+        <span class="c-icon c-icon--type-download">
+          <svg
             xmlns="http://www.w3.org/2000/svg"
             width="12"
             height="16"
