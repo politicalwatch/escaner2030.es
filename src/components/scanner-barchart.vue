@@ -1,10 +1,5 @@
 <template>
-  <D3BarChart
-    :config="config"
-    :datum="datum"
-    :height="height"
-    :download="downloadLabel"
-  ></D3BarChart>
+  <D3BarChart :config="config" :datum="datum" :height="height" />
 </template>
 
 <script>
@@ -69,10 +64,10 @@ export default {
       const topics = [];
 
       // Add comparation result to array
-      this.result.tags.forEach(d => {
+      this.result.tags.forEach((d) => {
         const names = d.topic.split(' ');
         const shortname = `${names[0]} ${names[1]}`;
-        const idx = topics.map(d => d.shortname).indexOf(shortname);
+        const idx = topics.map((d) => d.shortname).indexOf(shortname);
         if (idx === -1) {
           topics.push({
             shortname,
@@ -87,10 +82,10 @@ export default {
 
       // Add comparation result to array if exists
       if (this.isComparing) {
-        this.resultToCompare.result.tags.forEach(d => {
+        this.resultToCompare.result.tags.forEach((d) => {
           const names = d.topic.split(' ');
           const shortname = `${names[0]} ${names[1]}`;
-          const idx = topics.map(d => d.shortname).indexOf(shortname);
+          const idx = topics.map((d) => d.shortname).indexOf(shortname);
           if (idx === -1) {
             topics.push({
               shortname,
@@ -112,7 +107,7 @@ export default {
 
       // Map values
       this.datum = topics
-        .map(d => ({
+        .map((d) => ({
           key: d.shortname,
           'Texto escaneado': d.result,
           'Texto de referencia': d.compared,
