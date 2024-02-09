@@ -1,0 +1,10 @@
+BASE_URL=https://www.escaner2030.es/
+VITE_VUE_APP_SHORTNAME=escaner2030.es
+VITE_VUE_APP_BACKEND_URL=https://api.quehacenlosdiputados.es
+VITE_VUE_APP_USE_ALERTS=true
+VUE_APP_SENTRY_DSN=
+VITE_KNOWLEDGEBASE=ods
+VITE_DEFAULT_LOCALE=es
+VITE_FALLBACK_LOCALE=es
+VITE_VUE_APP_TITLE='Escáner2030 - Escanea cualquier texto en clave ODS'
+VITE_GA_ID=G-ZSVLWSY6F0
