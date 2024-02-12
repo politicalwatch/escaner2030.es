@@ -31,14 +31,6 @@
                     alt="Logo de la Secretaria de Estado de Cooperación (Ministerio de Asuntos Exteriores, Unión Europea y Cooperación) del Gobierno de España"
                 /></a>
               </div>
-              <div class="o-grid__col u-5@sm">
-                <a href="https://www.actua.ad/es/" target="_blank"
-                  ><img
-                    src="/img/logo-actua-color.jpg"
-                    class="big"
-                    alt="Logo de ACTUA Tech"
-                /></a>
-              </div>
             </div>
           </div>
         </div>
