@@ -75,6 +75,8 @@
 <script>
 import VueCookieAcceptDecline from 'vue-cookie-accept-decline';
 import 'vue-cookie-accept-decline/dist/vue-cookie-accept-decline.css';
+import { bootstrap } from 'vue-gtag';
+
 import { TipiIcon } from '@politicalwatch/tipi-uikit';
 
 export default {
