@@ -9,9 +9,10 @@
 
       <div id="result" class="o-section o-grid">
         <div class="o-grid__col u-12 result">
+          <div></div>
           <div class="u-padding-bottom-10">
             <h5>Extracto del texto:</h5>
-            <div class="o-grid__col u-12 u-8@sm u-12@xs">
+            <div class="o-grid__col u-12">
               <p class="u-color-secondary">{{ excerpt }}</p>
             </div>
           </div>
@@ -92,3 +93,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.c-page-header {
+  margin-bottom: 2rem;
+}
+</style>
