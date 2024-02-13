@@ -78,7 +78,7 @@
           </tipi-message>
 
           <div v-else>
-            <scanner-visualizations :result="result"></scanner-visualizations>
+            <scanner-visualizations :result="result" />
           </div>
 
           <!-- Begin CTAs -->

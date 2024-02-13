@@ -4,8 +4,6 @@ services:
     image: politicalwatch/escaner2030:latest
     container_name: escaner-frontend
     restart: unless-stopped
-    env_file:
-      - .env.production
     ports:
       - 8070:80
     volumes:
