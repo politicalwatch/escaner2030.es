@@ -7,7 +7,7 @@ WORKDIR /app
 COPY package.json ./
 RUN npm install
 COPY . .
-RUN mv .env.production.es .env.production
+RUN mv .env.escaner2030 .env.production
 RUN npm run build
 
 # production stage
