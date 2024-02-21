@@ -125,6 +125,9 @@ const messages = {
       },
       result: {
         scanning: 'Scanning document...',
+        subtitle_estimated:
+          "It will take approximately {estimatedTime} seconds to show you the results. Please don't leave…",
+        subtitle: "Please be patient. We're working on it.",
         notFound:
           "Scanner 2030 didn't found any matches between your text and the 2030 Agenda",
       },
@@ -294,6 +297,9 @@ const messages = {
       },
       result: {
         scanning: 'Escaneando documento',
+        subtitle_estimated:
+          'Tardaremos aproximadamente {estimatedTime} segundos en presentarte los resultados. No te vayas...',
+        subtitle: 'Ten paciencia. Estamos trabajando en ello.',
         notFound:
           'No hemos encontrado ninguna coincidencia entre tu texto y nuestras etiquetas.',
       },

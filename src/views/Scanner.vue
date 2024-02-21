@@ -140,8 +140,10 @@ export default {
   computed: {
     subtitle() {
       return this.estimatedTime
-        ? `Tardaremos aproximadamente ${this.estimatedTime} segundos en presentarte los resultados. No te vayas...`
-        : 'Ten paciencia. Estamos trabajando en ello.';
+        ? this.$t('scanner.result.subtitle_estimated', {
+            estimatedTime: this.estimatedTime,
+          })
+        : this.$t('scanner.result.subtitle');
     },
     hasInput() {
       return this.inputText != '' || this.inputFile != null;
