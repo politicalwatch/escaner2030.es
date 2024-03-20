@@ -35,8 +35,15 @@
     <div class="o-grid__col u-12 u-margin-top-4">
       <json-excel
         :data="csvItems"
+        :fields="{
+          topic: 'topic',
+          subtopic: 'subtopic',
+          tag: 'tag',
+          times: 'times',
+        }"
         id="downloadCSV"
-        type="xls"
+        type="csv"
+        :name="getNameFromCSV()"
         class="c-button c-button--icon-right c-button--primary"
       >
         {{ $t('components.scannerVisualizations.detailed.button') }}
@@ -125,6 +132,10 @@ export default {
         });
         this.isLoadingDocuments = false;
       });
+    },
+    getNameFromCSV: function () {
+      let d = new Date();
+      return 'export-' + d.toISOString() + '.csv';
     },
   },
   watch: {
