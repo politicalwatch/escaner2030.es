@@ -22,22 +22,24 @@
             />
           </p>
           <div class="c-input-label c-input-label--file u-block">
-            <label for="file">{{ $t('scanner.form.file') }}</label>
-            <input
-              type="file"
-              id="file"
-              name="file"
-              @change="loadSelectedFile"
-              placeholder="PDF, doc o txt"
-            />
-            <small class="u-color-secondary">{{
-              $t('scanner.form.weight')
-            }}</small
-            ><br />
-            <small class="u-color-secondary"
-              >pdf, txt, doc, docx, odt, xls, xlsx, ppt, pptx, jpg, png, gif,
-              html</small
-            >
+            <label for="file"
+              >{{ $t('scanner.form.file') }}
+              <input
+                type="file"
+                id="file"
+                name="file"
+                @change="loadSelectedFile"
+                placeholder="PDF, doc o txt"
+              />
+              <small class="u-color-secondary">{{
+                $t('scanner.form.weight')
+              }}</small
+              ><br />
+              <small class="u-color-secondary"
+                >pdf, txt, doc, docx, odt, xls, xlsx, ppt, pptx, jpg, png, gif,
+                html</small
+              >
+            </label>
           </div>
           <p>
             <button
