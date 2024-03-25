@@ -40,23 +40,26 @@
             >
           </div>
           <p>
-            <a
+            <button
               id="start"
               class="c-button c-button--primary"
+              :disabled="!hasInput || inProgress"
               @click.prevent="annotate"
-              >{{
+            >
+              {{
                 this.inProgress
                   ? $t('scanner.form.buttonProgress')
                   : $t('scanner.form.button')
-              }}</a
-            >
-            <a
+              }}
+            </button>
+            <button
               class="c-button"
               :class="{ disabled: inProgress }"
               v-if="hasInput"
-              @click="cleanTextAndResult"
-              >Limpiar</a
+              @click.prevent="cleanTextAndResult"
             >
+              Limpiar
+            </button>
           </p>
         </div>
       </div>
