@@ -15,10 +15,7 @@
                 alt="Logo de Political Watch"
             /></a>
           </div>
-          <div
-            v-if="$i18n.locale === 'es'"
-            class="o-grid__col u-8@sm u-offset-1@sm u-margin-top-4"
-          >
+          <div class="o-grid__col u-8@sm u-offset-1@sm u-margin-top-4">
             <p class="u-text-overline">{{ $t('common.footer.supportedBy') }}</p>
             <div class="o-grid">
               <div class="o-grid__col u-7@sm">
