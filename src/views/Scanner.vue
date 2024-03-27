@@ -22,41 +22,46 @@
             />
           </p>
           <div class="c-input-label c-input-label--file u-block">
-            <label for="file">{{ $t('scanner.form.file') }}</label>
-            <input
-              type="file"
-              id="file"
-              name="file"
-              @change="loadSelectedFile"
-              placeholder="PDF, doc o txt"
-            />
-            <small class="u-color-secondary">{{
-              $t('scanner.form.weight')
-            }}</small
-            ><br />
-            <small class="u-color-secondary"
-              >pdf, txt, doc, docx, odt, xls, xlsx, ppt, pptx, jpg, png, gif,
-              html</small
-            >
+            <label for="file"
+              >{{ $t('scanner.form.file') }}
+              <input
+                type="file"
+                id="file"
+                name="file"
+                @change="loadSelectedFile"
+                placeholder="PDF, doc o txt"
+              />
+              <small class="u-color-secondary">{{
+                $t('scanner.form.weight')
+              }}</small
+              ><br />
+              <small class="u-color-secondary"
+                >pdf, txt, doc, docx, odt, xls, xlsx, ppt, pptx, jpg, png, gif,
+                html</small
+              >
+            </label>
           </div>
           <p>
-            <a
+            <button
               id="start"
               class="c-button c-button--primary"
+              :disabled="!hasInput || inProgress"
               @click.prevent="annotate"
-              >{{
+            >
+              {{
                 this.inProgress
                   ? $t('scanner.form.buttonProgress')
                   : $t('scanner.form.button')
-              }}</a
-            >
-            <a
+              }}
+            </button>
+            <button
               class="c-button"
               :class="{ disabled: inProgress }"
               v-if="hasInput"
-              @click="cleanTextAndResult"
-              >Limpiar</a
+              @click.prevent="cleanTextAndResult"
             >
+              Limpiar
+            </button>
           </p>
         </div>
       </div>
@@ -78,7 +83,7 @@
           </tipi-message>
 
           <div v-else>
-            <scanner-visualizations :result="result"></scanner-visualizations>
+            <scanner-visualizations :result="result" />
           </div>
 
           <!-- Begin CTAs -->
@@ -140,8 +145,10 @@ export default {
   computed: {
     subtitle() {
       return this.estimatedTime
-        ? `Tardaremos aproximadamente ${this.estimatedTime} segundos en presentarte los resultados. No te vayas...`
-        : 'Ten paciencia. Estamos trabajando en ello.';
+        ? this.$t('scanner.result.subtitle_estimated', {
+            estimatedTime: this.estimatedTime,
+          })
+        : this.$t('scanner.result.subtitle');
     },
     hasInput() {
       return this.inputText != '' || this.inputFile != null;

@@ -1,11 +1,5 @@
 <template>
-  <D3WordsCloud
-    :config="config"
-    :datum="datum"
-    :height="400"
-    :title="$t('components.scannerWordscloud.title')"
-    :download="downloadLabel"
-  ></D3WordsCloud>
+  <D3WordsCloud :config="config" :datum="datum" :height="400"></D3WordsCloud>
 </template>
 
 <script>
