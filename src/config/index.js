@@ -19,6 +19,16 @@ export default {
     ],
     en: [
       {
+        route: 'scanner',
+        name: 'Scanner',
+        condition: true,
+      },
+      {
+        route: 'about',
+        name: 'About',
+        condition: true,
+      },
+      {
         route: 'http://escaner2030.es',
         name: 'Go to the Spanish version',
         condition: true,

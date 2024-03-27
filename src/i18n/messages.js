@@ -20,65 +20,29 @@ const messages = {
       },
     },
     about: {
-      content: `<p>
-      <b>Escáner2030</b> es una innovadora herramienta que permite
-      identificar y etiquetar de manera automática textos y documentos en
-      clave de Agenda 2030 y sus 17 Objetivos de Desarrollo Sostenible.
-    </p>
-    <h4>¿Cómo funciona?</h4>
+      title: 'About',
+      content: `<p><strong>Scanner2030</strong> is an innovative tool that allows you to automatically identify and tag texts and documents in terms of Agenda 2030 and its 17 Sustainable Development Goals.</p>
+    <h4>How does it work?</h4>
+    <p><strong>Scanner2030</strong> has a knowledge base composed of terminology associated with the SDGs that allows, through an automatic mass tagging process, to classify the texts entered, according to their relationship with the SDGs and their respective goals.</p>
+    <p>Once this tagging is done, and through an intuitive, attractive and accessible interface, all the information is offered in a reusable format. This allows users to upload their texts and/or documents for scanning according to their needs.</p>
+    <h4>Can it be adapted to other countries?</h4>
+    <p>Yes, the tool is designed to be adaptable. The technology used in Scanner2030 is built using free and open source software, which allows its adaptation to other countries or other contexts (academic, public administration, among others) to be quickly and responsive to the needs of each context.</p>
+    <h4>Who are we?</h4>
     <p>
-      <b>Escáner2030</b> dispone de una base de conocimiento compuesta por
-      terminología asociada a los ODS que permite, mediante un proceso
-      automático de etiquetado masivo, clasificar las expresiones de los
-      textos introducidos, de acuerdo con su relación con los ODS y sus
-      respectivas metas.
-    </p>
-    <p>
-      Una vez realizado este etiquetado, y a través de una interfaz
-      intuitiva, atractiva y accesible, se ofrece toda la información en
-      un formato reutilizable. Esto permite que los y las usuarias puedan
-      cargar sus textos y/o documentos para realizar un escaneo adaptado a
-      sus necesidades.
-    </p>
-    <h4>¿Puede adaptarse a otros países?</h4>
-    <p>
-      Sí, la herramienta ha sido diseñada para que su adaptación sea
-      posible. La tecnología utilizada en <b>Escáner2030</b> está
-      construida utilizando software libre y código abierto, lo cual
-      permite que su adaptación a otros países o a otros contextos
-      (académicos, administración pública, entre otros) sea posible de
-      manera rápida y respondiendo a las necesidades propias de cada
-      contexto.
-    </p>
-    <h4>¿Quiénes somos?</h4>
-    <p>
-      <b>Escáner2030</b> es un proyecto de
-      <a href="https://politicalwatch.es" target="_blank"
+      <strong>Scanner2030</strong>  is a project of
+      <a href="https://politicalwatch.es/en" target="_blank"
         >Political Watch</a
-      >, un think-and-do tank español. La misión de Political Watch es
-      generar, allá donde trabajamos, unas condiciones favorables para el
-      diseño, adopción e implementación de políticas públicas que
-      promuevan una sociedad más justa, equitativa y sostenible. Political
-      Watch desarrolla tecnologías innovadoras que permiten automatizar
-      los procesos de búsqueda de información y actividad política
-      relacionada con el desarrollo sostenible y que ofrecen acceso a esta
-      información de forma pública, directa y gratuita.
+      >, a Spanish think-and-do tank. Political Watch's mission is to generate, wherever we work, favourable conditions for the design, adoption and implementation of public policies that promote a more just, equitable and sustainable society. Political Watch develops innovative technologies that automate the process of finding information and political activity related to sustainable development and that provide access to this information directly and free of charge.
     </p>
-    <h4>¿Quiénes nos han apoyado?</h4>
+    <h4>Who supported us?</h4>
     <p>
-      Para el desarrollo de este proyecto ha sido fundamental la
-      colaboración de dos entidades: la
+    The collaboration of two entities has been fundamental to the development of this project: the
       <a
-        href="http://www.exteriores.gob.es/Portal/es/Ministerio/SecretariosDeEstado/SecretariaDeEstadoCooperacionInternacional/Paginas/Inicio.aspx"
+        href="https://www.exteriores.gob.es/en/Ministerio/Paginas/Secretaria-de-Estado-de-Cooperacion-Internacional.aspx"
         target="_blank"
-        >Secretaría de Estado de Cooperación Internacional</a
+        >State Secretary for International Cooperation</a
       >
-      del Ministerio de Asuntos Exteriores, Unión Europea y Cooperación
-      del Gobierno de España y
-      <a href="https://www.actua.ad/es/" target="_blank"
-        >Actua Innovació</a
-      >, hub tecnológico y de conocimiento, que promueve la investigación
-      y la innovación en Andorra.
+      of the Ministry of Foreign Affairs, European Union and Cooperation of Spain and Actua Innovació, a technological and knowledge hub that promotes research and innovation in Andorra.
     </p>`,
     },
     page404: {
@@ -176,6 +140,7 @@ const messages = {
       },
     },
     about: {
+      title: 'Acerca',
       content: `<p>
       <b>Escáner2030</b> es una innovadora herramienta que permite
       identificar y etiquetar de manera automática textos y documentos en
@@ -225,7 +190,7 @@ const messages = {
       Para el desarrollo de este proyecto ha sido fundamental la
       colaboración de dos entidades: la
       <a
-        href="http://www.exteriores.gob.es/Portal/es/Ministerio/SecretariosDeEstado/SecretariaDeEstadoCooperacionInternacional/Paginas/Inicio.aspx"
+        href="https://www.exteriores.gob.es/en/Ministerio/Paginas/Secretaria-de-Estado-de-Cooperacion-Internacional.aspx"
         target="_blank"
         >Secretaría de Estado de Cooperación Internacional</a
       >
