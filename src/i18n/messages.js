@@ -79,23 +79,6 @@ const messages = {
         >Actua Innovació</a
       >, hub tecnológico y de conocimiento, que promueve la investigación
       y la innovación en Andorra.
-    </p>
-    <h4>¿De dónde venimos?</h4>
-    <p>
-      <b>Escáner2030</b> es una adaptación de
-      <a href="https://tipiciudadano.es" target="_blank">TiPi Ciudadano</a
-      >, una herramienta digital implementada en España desde 2015, que
-      monitoriza toda la actividad parlamentaria del Congreso de los
-      Diputados en relación a 23 temáticas ligadas a la lucha contra la
-      pobreza y la desigualdad. Otras herramientas desarrolladas por
-      Political Watch con la misma tecnología son
-      <a href="https://parlamento2030.es" target="_blank"
-        >Parlamento2030</a
-      >
-      y
-      <a href="http://ods.congreso.gov.py/" target="_blank"
-        >Congreso2030Py</a
-      >.
     </p>`,
     },
     page404: {
@@ -251,21 +234,6 @@ const messages = {
       y la innovación en Andorra.
     </p>
     <h4>¿De dónde venimos?</h4>
-    <p>
-      <b>Escáner2030</b> es una adaptación de
-      <a href="https://tipiciudadano.es" target="_blank">TiPi Ciudadano</a
-      >, una herramienta digital implementada en España desde 2015, que
-      monitoriza toda la actividad parlamentaria del Congreso de los
-      Diputados en relación a 23 temáticas ligadas a la lucha contra la
-      pobreza y la desigualdad. Otras herramientas desarrolladas por
-      Political Watch con la misma tecnología son
-      <a href="https://parlamento2030.es" target="_blank"
-        >Parlamento2030</a
-      >
-      y
-      <a href="http://ods.congreso.gov.py/" target="_blank"
-        >Congreso2030Py</a
-      >.
     </p>`,
     },
     page404: {
