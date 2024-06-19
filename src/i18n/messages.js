@@ -111,7 +111,7 @@ const messages = {
             'We show you only 10 of {num} results, download the file to see the rest.',
           info: 'You can also get the data downloading the file.',
           button: 'Download the results',
-          downloadInfo: 'The results will be downloaded in Excel format.',
+          downloadInfo: 'The results will be downloaded in CSV format.',
         },
       },
       scannerWordscloud: {
@@ -269,7 +269,7 @@ const messages = {
             'Aquí solo te mostramos 10 resultados de {num}, para ver el resto descarga el archivo.',
           info: 'También puedes obtener los datos descargando el archivo.',
           button: 'Descarga tus resultados',
-          downloadInfo: 'Los resultados se descargarán en formato Excel.',
+          downloadInfo: 'Los resultados se descargarán en formato CSV.',
         },
       },
       scannerWordscloud: {

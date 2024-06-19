@@ -35,13 +35,10 @@
     <div class="o-grid__col u-12 u-margin-top-4">
       <json-excel
         :data="csvItems"
-        :fields="{
-          topic: 'topic',
-          subtopic: 'subtopic',
-          tag: 'tag',
-          times: 'times',
-        }"
+        :fields="fields"
         id="downloadCSV"
+        :escapeCsv="false"
+        :meta="json_meta"
         type="csv"
         :name="getNameFromCSV()"
         class="c-button c-button--icon-right c-button--primary"
@@ -115,6 +112,31 @@ export default {
       isLoadingDocuments: false,
       documents: [],
       compareOptions: [],
+      json_meta: [
+        [
+          {
+            key: 'charset',
+            value: 'utf-8',
+          },
+        ],
+      ],
+      fields: {
+        topic: {
+          field: 'topic',
+          callback: (value) => `"${value.replace(/\n/g, ' ')}"`,
+        },
+        subtopic: {
+          field: 'subtopic',
+          callback: (value) => `"${value.replace(/\n/g, ' ')}"`,
+        },
+        tag: {
+          field: 'tag',
+          callback: (value) => `"${value.replace(/\n/g, ' ')}"`,
+        },
+        times: {
+          field: 'times',
+        },
+      },
     };
   },
   methods: {
