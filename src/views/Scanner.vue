@@ -35,10 +35,7 @@
                 $t('scanner.form.weight')
               }}</small
               ><br />
-              <small class="u-color-secondary"
-                >pdf, txt, doc, docx, odt, xls, xlsx, ppt, pptx, jpg, png, gif,
-                html</small
-              >
+              <small class="u-color-secondary">pdf, txt, doc, docx, pptx</small>
             </label>
           </div>
           <p>
