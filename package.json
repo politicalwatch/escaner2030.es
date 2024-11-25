@@ -32,7 +32,7 @@
     "@rushstack/eslint-patch": "^1.1.0",
     "@vitejs/plugin-legacy": "^5.0.0",
     "@vitejs/plugin-vue": "^5.0.0",
-    "@vue/eslint-config-prettier": "^9.0.0",
+    "@vue/eslint-config-prettier": "^10.0.0",
     "@vue/test-utils": "^2.4.1",
     "autoprefixer": "^10.4.16",
     "eslint": "^8.5.0",
@@ -43,7 +43,7 @@
     "stylelint": "^16.1.0",
     "terser": "^5.14.2",
     "vite": "^5.0.0",
-    "vitest": "^1.0.0"
+    "vitest": "^2.0.0"
   },
   "browserslist": [
     "> 1%",

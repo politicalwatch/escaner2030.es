@@ -4,7 +4,6 @@ import router from '@/router';
 import { createPinia } from 'pinia';
 import { createI18n } from 'vue-i18n';
 import VueGtag from 'vue-gtag';
-import '@politicalwatch/tipi-uikit/src/styles/main.scss';
 import messages from '@/i18n/messages';
 
 const i18n = createI18n({
