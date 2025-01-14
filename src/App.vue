@@ -3,7 +3,7 @@
     <transition name="fade" mode="out-in">
       <div>
         <tipi-navbar
-          v-if="$i18n.locale === 'es'"
+          v-if="locale === 'es'"
           pre-image="/img/multicolor.jpg"
           :links="MENU"
           :logo="LOGO"
@@ -22,33 +22,25 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { computed, onMounted } from 'vue';
 import { TipiNavbar } from '@politicalwatch/tipi-uikit';
-import FooterBlock from '@/components/footer-block.vue';
+import { useI18n } from 'vue-i18n';
+
 import config from '@/config';
 import { useScannerStore } from '@/stores/scanner';
+import FooterBlock from '@/components/footer-block.vue';
 
-export default {
-  name: 'app',
-  components: {
-    TipiNavbar,
-    FooterBlock,
-  },
-  setup() {
-    const store = useScannerStore();
-    return { store };
-  },
-  data: function () {
-    return {
-      MENU: config.MENU[this.$i18n.locale],
-      DISCLAIMER: config.DISCLAIMER[this.$i18n.locale],
-      LOGO: config.LOGO,
-    };
-  },
-  created: function () {
-    this.store.getTopics();
-  },
-};
+const store = useScannerStore();
+const { locale } = useI18n();
+
+const MENU = computed(() => config.MENU[locale.value]);
+const DISCLAIMER = computed(() => config.DISCLAIMER[locale.value]);
+const LOGO = config.LOGO;
+
+onMounted(() => {
+  store.getTopics();
+});
 </script>
 
 <style lang="scss"></style>

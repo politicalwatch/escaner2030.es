@@ -69,6 +69,7 @@ const messages = {
         weight: 'The max file size allowed is 20 MB.',
         button: 'Scan now',
         buttonProgress: 'In progress...',
+        start: 'Start process',
       },
       result: {
         scanning: 'Scanning document...',
@@ -227,6 +228,7 @@ const messages = {
         weight: 'El peso máximo soportado de los archivos es de 20 MB.',
         button: 'Escanear',
         buttonProgress: 'En proceso...',
+        start: 'Iniciar proceso',
       },
       result: {
         scanning: 'Escaneando documento',

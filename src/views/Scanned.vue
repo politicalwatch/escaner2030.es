@@ -45,53 +45,40 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, onMounted, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { TipiHeader } from '@politicalwatch/tipi-uikit';
-import ScannerVisualizations from '@/components/scanner-visualizations.vue';
-import preScannedTexts from '@/scanned';
 import api from '@/api';
+import ScannerVisualizations from '@/components/scanner-visualizations.vue';
 
-export default {
-  name: 'scanned',
-  components: {
-    TipiHeader,
-    ScannerVisualizations,
-  },
-  data() {
-    return {
-      preScannedTexts: preScannedTexts,
-      resultToCompare: null,
-      textToCompare: null,
-      csvItems: [],
-      csvFields: ['topic', 'subtopic', 'tag', 'times'],
-      title: null,
-      excerpt: null,
-      result: null,
-      tagsInWordCloud: 25,
-    };
-  },
-  methods: {
-    getScanned: function () {
-      api
-        .getScanned(this.$route.params.id)
-        .then((response) => {
-          this.title = response.title;
-          this.excerpt = response.excerpt;
-          this.result = response.result[0];
-        })
-        .catch((error) => {
-          this.errors = error;
-          this.$router.push({ name: 'Page404', params: { 0: '404' } });
-        });
-    },
-  },
-  created: function () {
-    this.getScanned();
-  },
-  watch: {
-    $route: 'getScanned',
-  },
+const route = useRoute();
+const router = useRouter();
+
+const title = ref(null);
+const excerpt = ref(null);
+const result = ref(null);
+const errors = ref(null);
+
+const getScanned = () => {
+  api
+    .getScanned(route.params.id)
+    .then((response) => {
+      title.value = response.title;
+      excerpt.value = response.excerpt;
+      result.value = response.result[0];
+    })
+    .catch((error) => {
+      errors.value = error;
+      router.push({ name: 'Page404', params: { 0: '404' } });
+    });
 };
+
+onMounted(() => {
+  getScanned();
+});
+
+watch(route, getScanned);
 </script>
 
 <style lang="scss" scoped>
