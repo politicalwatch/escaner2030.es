@@ -15,7 +15,7 @@
     "axios": "^1.5.1",
     "core-js": "^3.32.2",
     "d3": "^7.8.5",
-    "pinia": "^2.1.6",
+    "pinia": "^3.0.0",
     "save-svg-as-png": "^1.4.17",
     "sweetalert2": "^11.7.31",
     "vite-svg-loader": "^5.1.0",
@@ -43,7 +43,7 @@
     "stylelint": "^16.1.0",
     "terser": "^5.14.2",
     "vite": "^6.0.0",
-    "vitest": "^2.0.0"
+    "vitest": "^3.0.0"
   },
   "browserslist": [
     "> 1%",
