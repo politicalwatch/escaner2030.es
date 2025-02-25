@@ -46,7 +46,7 @@
               @click.prevent="annotate"
             >
               {{
-                this.inProgress
+                inProgress
                   ? t('scanner.form.buttonProgress')
                   : t('scanner.form.button')
               }}

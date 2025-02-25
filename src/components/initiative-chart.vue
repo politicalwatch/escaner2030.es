@@ -48,13 +48,13 @@ export default {
     datum() {
       const datum = [];
       Object.keys(this.styles.topics)
-        .filter(k => k !== 'no-topic')
-        .forEach(k => {
+        .filter((k) => k !== 'no-topic')
+        .forEach((k) => {
           datum.push({
             name: this.styles.topics[k].shortname,
             color: this.styles.topics[k].color,
             value: this.initiative.tags
-              .filter(d => d.topic === k)
+              .filter((d) => d.topic === k)
               .reduce((cnt, o) => cnt + o.times, 0),
           });
         });
