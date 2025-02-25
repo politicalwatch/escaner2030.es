@@ -1,4 +1,4 @@
-name: Deploy to Production ES
+name: Deploy to Production EN
 
 on:
   push:
@@ -22,11 +22,11 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t ${{ secrets.DOCKER_HUB_REPO_ES }}:latest -f Dockerfile-es .
+          docker build -t ${{ secrets.DOCKER_HUB_REPO_EN }}:latest -f Dockerfile-en .
 
       - name: Push Docker Image to Docker Hub
         run: |
-          docker push ${{ secrets.DOCKER_HUB_REPO_ES }}:latest
+          docker push ${{ secrets.DOCKER_HUB_REPO_EN }}:latest
 
   deploy:
     name: Deploy to Production Server
@@ -41,7 +41,7 @@ jobs:
           username: ${{ secrets.PROD_SERVER_USER }}
           key: ${{ secrets.PROD_SERVER_SSH_KEY }}
           script: |
-            cd ${{ secrets.PROD_SERVER_PATH_ES }}
+            cd ${{ secrets.PROD_SERVER_PATH_EN }}
             docker compose pull
             docker compose down
             docker compose up -d --remove-orphans
@@ -60,7 +60,7 @@ jobs:
           payload: |
             {
               "channel": "#tech",
-              "text": "🚀 ¡Despliegue de escaner2030 con éxito!\n*Commit:* `${{ github.event.head_commit.message }}`\n*Branch:* `${{ github.ref }}`"
+              "text": "🚀 ¡Despliegue de scanner2030 con éxito!\n*Commit:* `${{ github.event.head_commit.message }}`\n*Branch:* `${{ github.ref }}`"
             }
 
       - name: Send failure message to Slack on error
@@ -72,5 +72,5 @@ jobs:
           payload: |
             {
               channel: "#tech",
-              "text": "❌ ¡Fallo durante el despliegue de escaner2030!\n*Commit:* `${{ github.event.head_commit.message }}`\n*Branch:* `${{ github.ref }}`"
+              "text": "❌ ¡Fallo durante el despliegue de scanner2030!\n*Commit:* `${{ github.event.head_commit.message }}`\n*Branch:* `${{ github.ref }}`"
             }
